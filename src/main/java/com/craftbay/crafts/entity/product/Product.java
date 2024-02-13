@@ -1,4 +1,4 @@
-package com.craftbay.crafts.entity;
+package com.craftbay.crafts.entity.product;
 
 
 import lombok.AllArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,8 +27,12 @@ public class Product {
     private String category;
     @Lob
     private String image;
-    public int getId()
-    {
-        return id;
-    }
+
+    private List<ProductPriceDetails> productPriceDetails;
+
+
+//    public int getId()
+//    {
+//        return id;
+//    }
 }

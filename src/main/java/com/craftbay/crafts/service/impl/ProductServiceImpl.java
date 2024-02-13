@@ -1,8 +1,7 @@
 package com.craftbay.crafts.service.impl;
 
-import com.craftbay.crafts.dto.product.ProductRequestDto;
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.entity.Product;
+import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.service.ProductService;
 import com.craftbay.crafts.util.ProductUtil;
@@ -17,7 +16,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Service
-public class ProductIMPL implements ProductService {
+public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 

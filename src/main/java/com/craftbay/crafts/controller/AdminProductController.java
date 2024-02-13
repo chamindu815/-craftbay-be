@@ -1,7 +1,7 @@
 package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.entity.Product;
+import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -2,7 +2,7 @@ package com.craftbay.crafts.util;
 
 import com.craftbay.crafts.dto.product.ProductRequestDto;
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.entity.Product;
+import com.craftbay.crafts.entity.product.Product;
 import org.springframework.stereotype.Component;
 
 @Component

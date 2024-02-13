@@ -1,7 +1,7 @@
 package com.craftbay.crafts.service;
 
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.entity.Product;
+import com.craftbay.crafts.entity.product.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
