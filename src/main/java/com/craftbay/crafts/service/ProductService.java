@@ -1,15 +1,16 @@
 package com.craftbay.crafts.service;
 
+import com.craftbay.crafts.dto.product.UpdateProductRequestDto;
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.entity.product.Product;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ProductService {
-    ProductResponseDto saveProduct(MultipartFile image, String name, String description, double price, int quantity, String category);
+    ProductResponseDto saveProduct(MultipartFile image, String name, String description, double buyingPrice, double sellingPrice, int quantity, LocalDate date, String category);
 
-    ProductResponseDto updateProduct(Product product);
+    ProductResponseDto updateProduct(UpdateProductRequestDto updateProductRequestDto);
 
     String deleteProduct(int id);
 

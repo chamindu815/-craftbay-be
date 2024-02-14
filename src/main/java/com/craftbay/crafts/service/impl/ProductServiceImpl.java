@@ -1,7 +1,12 @@
 package com.craftbay.crafts.service.impl;
 
+import com.craftbay.crafts.dto.product.ProductBuyingPriceDetailsDto;
+import com.craftbay.crafts.dto.product.ProductSellingPriceDetailsDto;
+import com.craftbay.crafts.dto.product.UpdateProductRequestDto;
 import com.craftbay.crafts.dto.product.ProductResponseDto;
 import com.craftbay.crafts.entity.product.Product;
+import com.craftbay.crafts.entity.product.ProductBuyingPriceDetails;
+import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.service.ProductService;
 import com.craftbay.crafts.util.ProductUtil;
@@ -11,16 +16,20 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductResponseDto saveProduct(MultipartFile image, String name, String description, double price, int quantity, String category ){
+    public ProductResponseDto saveProduct(MultipartFile image, String name, String description,  double buyingPrice, double sellingPrice, int quantity, LocalDate date, String category){
 
         Product product = new Product();
 
@@ -38,9 +47,27 @@ public class ProductServiceImpl implements ProductService {
 
         product.setName(name);
         product.setDescription(description);
-        product.setPrice(price);
-        product.setQuantity(quantity);
         product.setCategory(category);
+        product.setRemainingQuantity(quantity);
+
+        LocalDate createdDate = LocalDate.now();
+        product.setCreatedDate(createdDate);
+
+        LocalDate updateDate = LocalDate.now();
+        product.setUpdateDate(updateDate);
+
+        ProductBuyingPriceDetails productBuyingPriceDetails = new ProductBuyingPriceDetails();
+        productBuyingPriceDetails.setPrice(buyingPrice);
+        productBuyingPriceDetails.setDate(date);
+        productBuyingPriceDetails.setQuantity(quantity);
+
+        ProductSellingPriceDetails productSellingPriceDetails = new ProductSellingPriceDetails();
+        productSellingPriceDetails.setDate(LocalDate.now());
+        productSellingPriceDetails.setPrice(sellingPrice);
+
+        product.setProductBuyingPriceDetails(List.of(productBuyingPriceDetails));
+        product.setProductSellingPriceDetails(List.of(productSellingPriceDetails));
+
 
         Product savedProduct = productRepository.save(product);
         ProductResponseDto response = ProductUtil.convertProductToProductResponseDto(savedProduct);
@@ -86,13 +113,67 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public ProductResponseDto updateProduct(Product product){
-        Product existingProduct= productRepository.findById(product.getId()).orElse(null);
-        existingProduct.setName(product.getName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setQuantity(product.getQuantity());
-        existingProduct.setCategory(product.getCategory());
+    public ProductResponseDto updateProduct(UpdateProductRequestDto updateProductRequestDto){
+        Product existingProduct = productRepository.findById(updateProductRequestDto.getId()).orElse(null);
+        existingProduct.setName(updateProductRequestDto.getName());
+        existingProduct.setDescription(updateProductRequestDto.getDescription());
+        existingProduct.setCategory(updateProductRequestDto.getCategory());
+
+        existingProduct.setUpdateDate(LocalDate.now());
+//        existingProduct.setPrice(product.getPrice());
+//        existingProduct.setQuantity(product.getQuantity());
+        for (int i =0; i< updateProductRequestDto.getProductBuyingPriceDetailsDtoList().size();i++) {
+            ProductBuyingPriceDetailsDto productBuyingPriceDetailsDto = updateProductRequestDto.getProductBuyingPriceDetailsDtoList().get(i);
+
+
+            existingProduct.getProductBuyingPriceDetails().stream().findAny();
+            Optional<ProductBuyingPriceDetails> result = existingProduct.getProductBuyingPriceDetails()
+                    .stream().parallel()
+                    .filter(prodPriceDetail -> prodPriceDetail.getId() == productBuyingPriceDetailsDto.getId()).findAny();
+//            result != null -> update result
+//            else create new result.isPresent()
+            if (result.isPresent()){
+                ProductBuyingPriceDetails existingProductPriceDetails = result.get();
+                existingProductPriceDetails.setPrice(productBuyingPriceDetailsDto.getPrice());
+                existingProductPriceDetails.setDate(productBuyingPriceDetailsDto.getDate());
+                existingProductPriceDetails.setQuantity(productBuyingPriceDetailsDto.getQuantity());
+            } else {
+//                existingProduct.setName("Chcamindu");
+                existingProduct.setRemainingQuantity(existingProduct.getRemainingQuantity() + productBuyingPriceDetailsDto.getQuantity());
+                ProductBuyingPriceDetails productBuyingPriceDetails1 = new ProductBuyingPriceDetails();
+                productBuyingPriceDetails1.setId(productBuyingPriceDetailsDto.getId());
+                productBuyingPriceDetails1.setPrice(productBuyingPriceDetailsDto.getPrice());
+                productBuyingPriceDetails1.setDate(productBuyingPriceDetailsDto.getDate());
+                productBuyingPriceDetails1.setQuantity(productBuyingPriceDetailsDto.getQuantity());
+                existingProduct.getProductBuyingPriceDetails().add(productBuyingPriceDetails1);
+            }
+
+        }
+
+        for (int i = 0; i< updateProductRequestDto.getProductSellingPriceDetailsDtoList().size(); i++){
+            ProductSellingPriceDetailsDto productSellingPriceDetailsDto = updateProductRequestDto.getProductSellingPriceDetailsDtoList().get(i);
+
+            existingProduct.getProductSellingPriceDetails().stream().findAny();
+            Optional<ProductSellingPriceDetails> result = existingProduct.getProductSellingPriceDetails()
+                    .stream().parallel()
+                    .filter(prodPriceDetail -> prodPriceDetail.getId() == productSellingPriceDetailsDto.getId()).findAny();
+
+            if (result.isPresent()){
+                ProductSellingPriceDetails existingProductPriceDetails = result.get();
+                existingProductPriceDetails.setDate(productSellingPriceDetailsDto.getDate());
+                existingProductPriceDetails.setPrice(productSellingPriceDetailsDto.getPrice());
+            }
+            else {
+
+                ProductSellingPriceDetails productSellingPriceDetails1 = new ProductSellingPriceDetails();
+                productSellingPriceDetails1.setId(productSellingPriceDetailsDto.getId());
+                productSellingPriceDetails1.setDate(productSellingPriceDetailsDto.getDate());
+                productSellingPriceDetails1.setPrice(productSellingPriceDetailsDto.getPrice());
+                existingProduct.getProductSellingPriceDetails().add(productSellingPriceDetails1);
+            }
+
+        }
+
         Product updatedProduct = productRepository.save(existingProduct);
         ProductResponseDto response = ProductUtil.convertProductToProductResponseDto(updatedProduct);
         return response;
