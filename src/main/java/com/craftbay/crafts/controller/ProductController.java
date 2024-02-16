@@ -1,7 +1,7 @@
 package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.service.ProductService;
+import com.craftbay.crafts.service.AdminProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +12,22 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private AdminProductService adminProductService;
 
     @CrossOrigin
     @GetMapping("/product")
     public List<ProductResponseDto> findAllProducts() {
-        return productService.getProducts();
+        return adminProductService.getProducts();
     }
 
     @GetMapping("/product/{id}")
     public ProductResponseDto findProductById(int id) {
-        return productService.getProductById(id);
+        return adminProductService.getProductById(id);
     }
 
     @GetMapping("/productbyname/{name}")
     public ProductResponseDto findProductByName(String name) {
-        return productService.getProductByName(name);
+        return adminProductService.getProductByName(name);
     }
 
 }

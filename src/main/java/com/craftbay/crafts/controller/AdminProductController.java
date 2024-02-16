@@ -2,20 +2,22 @@ package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.product.UpdateProductRequestDto;
 import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.service.ProductService;
+import com.craftbay.crafts.service.AdminProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/product")
 public class AdminProductController {
 
     @Autowired
-    private ProductService productService;
+    private AdminProductService adminProductService;
 
     @CrossOrigin
     @PostMapping("/addProduct")
@@ -33,18 +35,32 @@ public class AdminProductController {
         LocalDate localDate = LocalDate.parse(date, formatter);
 
 
-        return productService.saveProduct(image, name, description, buyingPrice, sellingPrice, quantity, localDate, category);
+        return adminProductService.saveProduct(image, name, description, buyingPrice, sellingPrice, quantity, localDate, category);
 
     }
 
 
     @PutMapping("/update")
     public ProductResponseDto updateProduct(@RequestBody UpdateProductRequestDto updateProductRequestDto) {
-        return productService.updateProduct(updateProductRequestDto);
+        return adminProductService.updateProduct(updateProductRequestDto);
+    }
+
+    @GetMapping("/adminViewProduct")
+    public List<ProductResponseDto> viewProduct(){
+        return adminProductService.adminViewProduct();
+    }
+
+    @GetMapping("/getNewArrival")
+    public List<ProductResponseDto> getNewArrival(){
+        return adminProductService.getNewArrival();
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable int id) {
-        return productService.deleteProduct(id);
+    public String deleteProduct(@PathVariable("id") int id) {
+        return adminProductService.deleteProduct(id);
     }
+
+
 }
+
+

@@ -8,7 +8,7 @@ import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.entity.product.ProductBuyingPriceDetails;
 import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
 import com.craftbay.crafts.repository.ProductRepository;
-import com.craftbay.crafts.service.ProductService;
+import com.craftbay.crafts.service.AdminProductService;
 import com.craftbay.crafts.util.ProductUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class AdminProductServiceImpl implements AdminProductService {
     @Autowired
     private ProductRepository productRepository;
 
@@ -105,6 +103,27 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByName(name);
         ProductResponseDto response = ProductUtil.convertProductToProductResponseDto(product);
         return response;
+    }
+
+    @Override
+    public List<ProductResponseDto> adminViewProduct() {
+        List<Product> productList = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+        for (int i =0; i<productList.size(); i++){
+            ProductResponseDto responseDto = ProductUtil.convertProductToProductResponseDto(productList.get(i));
+            productResponseDtoList.add(responseDto);
+        }
+        return productResponseDtoList;
+    }
+
+    public List<ProductResponseDto> getNewArrival(){
+        List<Product> productList = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+        for (int i=0; i<productList.size(); i++){
+            ProductResponseDto productResponseDto = ProductUtil.convertProductToProductResponseDto(productList.get(i));
+            productResponseDtoList.add(productResponseDto);
+        }
+        return productResponseDtoList;
     }
 
     public String deleteProduct(int id){
