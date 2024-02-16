@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 public class ProductUtil {
-    public static AdminProductResponseDto convertProductToProductResponseDto(Product product) {
+    public static AdminProductResponseDto convertProductToAdminProductResponseDto(Product product) {
         AdminProductResponseDto response = new AdminProductResponseDto();
         response.setId(product.getId());
         response.setName(product.getName());

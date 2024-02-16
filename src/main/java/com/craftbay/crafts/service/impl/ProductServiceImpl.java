@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productRepository.findAll();
         List<AdminProductResponseDto> adminProductResponseDtoList = new ArrayList<>();
         for (int i=0; i<productList.size(); i++){
-            AdminProductResponseDto adminProductResponseDto = ProductUtil.convertProductToProductResponseDto(productList.get(i));
+            AdminProductResponseDto adminProductResponseDto = ProductUtil.convertProductToAdminProductResponseDto(productList.get(i));
             adminProductResponseDtoList.add(adminProductResponseDto);
         }
         return adminProductResponseDtoList;

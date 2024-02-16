@@ -68,7 +68,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
 
         Product savedProduct = productRepository.save(product);
-        AdminProductResponseDto response = ProductUtil.convertProductToProductResponseDto(savedProduct);
+        AdminProductResponseDto response = ProductUtil.convertProductToAdminProductResponseDto(savedProduct);
         return response;
 
 
@@ -88,20 +88,20 @@ public class AdminProductServiceImpl implements AdminProductService {
         List<AdminProductResponseDto> responseList= new ArrayList<AdminProductResponseDto>();
         for (int i=0;i<productList.size();i++) {
 
-            AdminProductResponseDto response = ProductUtil.convertProductToProductResponseDto(productList.get(i));
+            AdminProductResponseDto response = ProductUtil.convertProductToAdminProductResponseDto(productList.get(i));
             responseList.add(response);
         }
         return responseList;
     }
 
     public AdminProductResponseDto adminGetProductById(int id){
-        AdminProductResponseDto response = ProductUtil.convertProductToProductResponseDto(productRepository.findById(id).get());
+        AdminProductResponseDto response = ProductUtil.convertProductToAdminProductResponseDto(productRepository.findById(id).get());
         return response;
     }
 
     public AdminProductResponseDto adminGetProductByName(String name){
         Product product = productRepository.findByName(name);
-        AdminProductResponseDto response = ProductUtil.convertProductToProductResponseDto(product);
+        AdminProductResponseDto response = ProductUtil.convertProductToAdminProductResponseDto(product);
         return response;
     }
 
@@ -110,7 +110,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         List<Product> productList = productRepository.findAll();
         List<AdminProductResponseDto> adminProductResponseDtoList = new ArrayList<>();
         for (int i =0; i<productList.size(); i++){
-            AdminProductResponseDto responseDto = ProductUtil.convertProductToProductResponseDto(productList.get(i));
+            AdminProductResponseDto responseDto = ProductUtil.convertProductToAdminProductResponseDto(productList.get(i));
             adminProductResponseDtoList.add(responseDto);
         }
         return adminProductResponseDtoList;
@@ -184,7 +184,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         }
 
         Product updatedProduct = productRepository.save(existingProduct);
-        AdminProductResponseDto response = ProductUtil.convertProductToProductResponseDto(updatedProduct);
+        AdminProductResponseDto response = ProductUtil.convertProductToAdminProductResponseDto(updatedProduct);
         return response;
     }
 
