@@ -50,10 +50,7 @@ public class AdminProductController {
         return adminProductService.adminViewProduct();
     }
 
-    @GetMapping("/getNewArrival")
-    public List<ProductResponseDto> getNewArrival(){
-        return adminProductService.getNewArrival();
-    }
+
 
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") int id) {

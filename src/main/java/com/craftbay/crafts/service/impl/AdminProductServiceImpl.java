@@ -116,16 +116,6 @@ public class AdminProductServiceImpl implements AdminProductService {
         return productResponseDtoList;
     }
 
-    public List<ProductResponseDto> getNewArrival(){
-        List<Product> productList = productRepository.findAll();
-        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
-        for (int i=0; i<productList.size(); i++){
-            ProductResponseDto productResponseDto = ProductUtil.convertProductToProductResponseDto(productList.get(i));
-            productResponseDtoList.add(productResponseDto);
-        }
-        return productResponseDtoList;
-    }
-
     public String deleteProduct(int id){
         productRepository.deleteById(id);
         return "Product Removed ||" +id;

@@ -22,5 +22,4 @@ public interface AdminProductService {
 
     List<ProductResponseDto> adminViewProduct();
 
-    List<ProductResponseDto> getNewArrival();
 }
