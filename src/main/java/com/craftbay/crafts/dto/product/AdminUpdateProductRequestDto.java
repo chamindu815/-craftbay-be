@@ -6,7 +6,7 @@ import javax.persistence.Lob;
 import java.util.List;
 
 @Data
-public class UpdateProductRequestDto {
+public class AdminUpdateProductRequestDto {
     private int id;
     private String name;
     private String description;
@@ -15,6 +15,6 @@ public class UpdateProductRequestDto {
     @Lob
     private String image;
 
-    private List<ProductBuyingPriceDetailsDto> productBuyingPriceDetailsDtoList;
-    private List<ProductSellingPriceDetailsDto> productSellingPriceDetailsDtoList;
+    private List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtoList;
+    private List<AdminProductSellingPriceDetailsDto> adminProductSellingPriceDetailsDtoList;
 }

@@ -1,25 +1,25 @@
 package com.craftbay.crafts.service;
 
-import com.craftbay.crafts.dto.product.UpdateProductRequestDto;
-import com.craftbay.crafts.dto.product.ProductResponseDto;
+import com.craftbay.crafts.dto.product.AdminUpdateProductRequestDto;
+import com.craftbay.crafts.dto.product.AdminProductResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface AdminProductService {
-    ProductResponseDto saveProduct(MultipartFile image, String name, String description, double buyingPrice, double sellingPrice, int quantity, LocalDate date, String category);
+    AdminProductResponseDto adminSaveProduct(MultipartFile image, String name, String description, double buyingPrice, double sellingPrice, int quantity, LocalDate date, String category);
 
-    ProductResponseDto updateProduct(UpdateProductRequestDto updateProductRequestDto);
+    AdminProductResponseDto adminUpdateProduct(AdminUpdateProductRequestDto adminUpdateProductRequestDto);
 
-    String deleteProduct(int id);
+    String adminDeleteProduct(int id);
 
-    List<ProductResponseDto> getProducts();
+    List<AdminProductResponseDto> adminGetProducts();
 
-    ProductResponseDto getProductById(int id);
+    AdminProductResponseDto adminGetProductById(int id);
 
-    ProductResponseDto getProductByName(String name);
+    AdminProductResponseDto adminGetProductByName(String name);
 
-    List<ProductResponseDto> adminViewProduct();
+    List<AdminProductResponseDto> adminViewProducts();
 
 }

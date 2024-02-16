@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.Lob;
 
 @Data
-public class AddProductRequestDto {
+public class AdminAddProductRequestDto {
     private int id;
     private String name;
     private String description;

@@ -1,8 +1,8 @@
 package com.craftbay.crafts.util;
 
-import com.craftbay.crafts.dto.product.ProductBuyingPriceDetailsDto;
-import com.craftbay.crafts.dto.product.ProductResponseDto;
-import com.craftbay.crafts.dto.product.ProductSellingPriceDetailsDto;
+import com.craftbay.crafts.dto.product.AdminProductBuyingPriceDetailsDto;
+import com.craftbay.crafts.dto.product.AdminProductResponseDto;
+import com.craftbay.crafts.dto.product.AdminProductSellingPriceDetailsDto;
 import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.entity.product.ProductBuyingPriceDetails;
 import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
@@ -13,8 +13,8 @@ import java.util.List;
 
 @Component
 public class ProductUtil {
-    public static ProductResponseDto convertProductToProductResponseDto(Product product) {
-        ProductResponseDto response = new ProductResponseDto();
+    public static AdminProductResponseDto convertProductToProductResponseDto(Product product) {
+        AdminProductResponseDto response = new AdminProductResponseDto();
         response.setId(product.getId());
         response.setName(product.getName());
         response.setImage(product.getImage());
@@ -22,32 +22,32 @@ public class ProductUtil {
         response.setRemainingQuantity(product.getRemainingQuantity());
 
 
-        List<ProductBuyingPriceDetailsDto> productBuyingPriceDetailsDtoList = new ArrayList<>();
+        List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtoList = new ArrayList<>();
         for (int i =0; i< product.getProductBuyingPriceDetails().size(); i++){
             ProductBuyingPriceDetails buyingPriceDetails = product.getProductBuyingPriceDetails().get(i);
 
-            ProductBuyingPriceDetailsDto buyingPriceDetailsDto = new ProductBuyingPriceDetailsDto();
+            AdminProductBuyingPriceDetailsDto buyingPriceDetailsDto = new AdminProductBuyingPriceDetailsDto();
             buyingPriceDetailsDto.setId(buyingPriceDetails.getId());
             buyingPriceDetailsDto.setDate(buyingPriceDetails.getDate());
             buyingPriceDetailsDto.setPrice(buyingPriceDetails.getPrice());
             buyingPriceDetailsDto.setQuantity(buyingPriceDetails.getQuantity());
-            productBuyingPriceDetailsDtoList.add(buyingPriceDetailsDto);
+            adminProductBuyingPriceDetailsDtoList.add(buyingPriceDetailsDto);
         }
-        response.setProductBuyingPriceDetailsDtos(productBuyingPriceDetailsDtoList);
+        response.setAdminProductBuyingPriceDetailsDtos(adminProductBuyingPriceDetailsDtoList);
 
 
-        List<ProductSellingPriceDetailsDto> productSellingPriceDetailsDtoList = new ArrayList<>();
+        List<AdminProductSellingPriceDetailsDto> adminProductSellingPriceDetailsDtoList = new ArrayList<>();
         for (int i = 0; i<product.getProductSellingPriceDetails().size(); i++){
             ProductSellingPriceDetails sellingPriceDetails = product.getProductSellingPriceDetails().get(i);
 
-            ProductSellingPriceDetailsDto sellingPriceDetailsDto = new ProductSellingPriceDetailsDto();
+            AdminProductSellingPriceDetailsDto sellingPriceDetailsDto = new AdminProductSellingPriceDetailsDto();
             sellingPriceDetailsDto.setId(sellingPriceDetails.getId());
             sellingPriceDetailsDto.setDate(sellingPriceDetails.getDate());
             sellingPriceDetailsDto.setPrice(sellingPriceDetails.getPrice());
 
-            productSellingPriceDetailsDtoList.add(sellingPriceDetailsDto);
+            adminProductSellingPriceDetailsDtoList.add(sellingPriceDetailsDto);
         }
-        response.setProductSellingPriceDetailsDtos(productSellingPriceDetailsDtoList);
+        response.setAdminProductSellingPriceDetailsDtos(adminProductSellingPriceDetailsDtoList);
 
 
         response.setCategory(product.getCategory());
