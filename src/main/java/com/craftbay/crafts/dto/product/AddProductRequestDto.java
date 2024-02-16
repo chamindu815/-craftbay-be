@@ -2,17 +2,17 @@ package com.craftbay.crafts.dto.product;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Lob;
 
 @Data
-public class ProductRequestDto {
+public class AddProductRequestDto {
+    private int id;
     private String name;
     private String description;
-    private double price;
-    private int quantity;
     private String category;
+    private double buyingPrice;
+    private double sellingPrice;
+    private int quantity;
 
     @Lob
     private String image;
