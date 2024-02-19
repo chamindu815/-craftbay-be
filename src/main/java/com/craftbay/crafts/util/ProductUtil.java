@@ -3,13 +3,15 @@ package com.craftbay.crafts.util;
 import com.craftbay.crafts.dto.product.AdminProductBuyingPriceDetailsDto;
 import com.craftbay.crafts.dto.product.AdminProductResponseDto;
 import com.craftbay.crafts.dto.product.AdminProductSellingPriceDetailsDto;
+import com.craftbay.crafts.dto.pub.product.ProductResponseDto;
 import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.entity.product.ProductBuyingPriceDetails;
 import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductUtil {
@@ -53,6 +55,31 @@ public class ProductUtil {
         response.setCategory(product.getCategory());
         return response;
     }
+
+    public static ProductResponseDto convertProductToProductResponseDto(Product product) {
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setId(product.getId());
+        productResponseDto.setName(product.getName());
+        productResponseDto.setDescription(product.getDescription());
+        productResponseDto.setCategory(product.getCategory());
+        productResponseDto.setRemainingQuantity(product.getRemainingQuantity());
+        productResponseDto.setImage(product.getImage());
+
+//        TODO: Need to test properly
+        List<ProductSellingPriceDetails> priceList = product.getProductSellingPriceDetails().stream().sorted((a,b)->
+            a.getDate().compareTo(b.getDate())
+        ).collect(Collectors.toList());
+
+        for (int i=0; i<priceList.size();i++) {
+            if(priceList.get(i).getDate().isBefore(LocalDate.now()) || priceList.get(i).getDate().isEqual(LocalDate.now())) {
+                productResponseDto.setSellingPrice(priceList.get(i).getPrice());
+                break;
+            }
+        }
+
+     return productResponseDto;
+    }
+
 
 //    public static Product convertProductRequestDtoToProduct(ProductRequestDto productRequestDto) {
 //        Product product = new Product();

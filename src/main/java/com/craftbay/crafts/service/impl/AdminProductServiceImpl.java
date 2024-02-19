@@ -135,7 +135,7 @@ public class AdminProductServiceImpl implements AdminProductService {
             AdminProductBuyingPriceDetailsDto adminProductBuyingPriceDetailsDto = adminUpdateProductRequestDto.getAdminProductBuyingPriceDetailsDtoList().get(i);
 
 
-            existingProduct.getProductBuyingPriceDetails().stream().findAny();
+//            existingProduct.getProductBuyingPriceDetails().stream().findAny();
             Optional<ProductBuyingPriceDetails> result = existingProduct.getProductBuyingPriceDetails()
                     .stream().parallel()
                     .filter(prodPriceDetail -> prodPriceDetail.getId() == adminProductBuyingPriceDetailsDto.getId()).findAny();
@@ -162,7 +162,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         for (int i = 0; i< adminUpdateProductRequestDto.getAdminProductSellingPriceDetailsDtoList().size(); i++){
             AdminProductSellingPriceDetailsDto adminProductSellingPriceDetailsDto = adminUpdateProductRequestDto.getAdminProductSellingPriceDetailsDtoList().get(i);
 
-            existingProduct.getProductSellingPriceDetails().stream().findAny();
+//            existingProduct.getProductSellingPriceDetails().stream().findAny();
             Optional<ProductSellingPriceDetails> result = existingProduct.getProductSellingPriceDetails()
                     .stream().parallel()
                     .filter(prodPriceDetail -> prodPriceDetail.getId() == adminProductSellingPriceDetailsDto.getId()).findAny();
