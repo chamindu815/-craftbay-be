@@ -1,6 +1,7 @@
 package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.product.AdminProductResponseDto;
+import com.craftbay.crafts.dto.pub.product.ProductResponseDto;
 import com.craftbay.crafts.service.AdminProductService;
 import com.craftbay.crafts.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ public class ProductController {
 
     @Autowired
     private AdminProductService adminProductService;
+
+    @Autowired
     private ProductService productService;
 
     @CrossOrigin
@@ -32,9 +35,15 @@ public class ProductController {
         return adminProductService.adminGetProductByName(name);
     }
 
+    @CrossOrigin
     @GetMapping("/getNewArrival")
-    public List<AdminProductResponseDto> getNewArrival(){
+    public List<ProductResponseDto> getNewArrival(){
         return productService.getNewArrival();
+    }
+
+    @GetMapping("/getShopProducts")
+    public List<ProductResponseDto> getShopProducts( @RequestParam(value = "category") String category){
+        return productService.getShopProducts(category);
     }
 
 }

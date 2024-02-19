@@ -44,13 +44,13 @@ public class AdminProductController {
         return adminProductService.adminUpdateProduct(adminUpdateProductRequestDto);
     }
 
+    @CrossOrigin
     @GetMapping("/adminViewProduct")
     public List<AdminProductResponseDto> viewProduct(){
         return adminProductService.adminViewProducts();
     }
 
-
-
+    @CrossOrigin
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
         return adminProductService.adminDeleteProduct(id);
