@@ -10,6 +10,7 @@ import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.service.AdminProductService;
 import com.craftbay.crafts.util.ProductUtil;
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,7 +28,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public AdminProductResponseDto adminSaveProduct(MultipartFile image, String name, String description, double buyingPrice, double sellingPrice, int quantity, LocalDate date, String category){
+    public AdminProductResponseDto adminSaveProduct(MultipartFile image, String name, String description, double buyingPrice, double sellingPrice, int quantity, LocalDate date, ProductCategoryEnum category){
 
         Product product = new Product();
 

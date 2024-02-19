@@ -1,6 +1,7 @@
 package com.craftbay.crafts.entity.product;
 
 
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,10 @@ public class Product {
     private String name;
     private String description;
     private int remainingQuantity;
-    private String category;
+
+    @Enumerated(EnumType.STRING)
+    private ProductCategoryEnum category;
+
     private LocalDate createdDate;
     private LocalDate updateDate;
     @Lob

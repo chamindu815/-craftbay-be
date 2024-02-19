@@ -3,6 +3,7 @@ package com.craftbay.crafts.controller;
 import com.craftbay.crafts.dto.product.AdminUpdateProductRequestDto;
 import com.craftbay.crafts.dto.product.AdminProductResponseDto;
 import com.craftbay.crafts.service.AdminProductService;
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +28,7 @@ public class AdminProductController {
                                                 @RequestParam("sellingPrice") double sellingPrice,
                                                 @RequestParam("quantity") int quantity,
                                                 @RequestParam("date") String date,
-                                                @RequestParam(value = "category", required = false) String category)
+                                                @RequestParam(value = "category", required = false) ProductCategoryEnum category)
     {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

@@ -1,6 +1,6 @@
 package com.craftbay.crafts.util.enums;
 
-public enum ProductType {
+public enum ProductCategoryEnum {
     WOODEN,
     TEXTILE,
     CLAY,

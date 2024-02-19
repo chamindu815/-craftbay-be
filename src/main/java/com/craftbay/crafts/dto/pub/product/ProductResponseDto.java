@@ -1,5 +1,6 @@
 package com.craftbay.crafts.dto.pub.product;
 
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ public class ProductResponseDto {
     private int id;
     private String name;
     private String description;
-    private String category;
+    private ProductCategoryEnum category;
     private int remainingQuantity;
     private double sellingPrice;
 
