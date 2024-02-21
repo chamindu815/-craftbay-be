@@ -1,12 +1,17 @@
 package com.craftbay.crafts.service;
 
-import com.craftbay.crafts.dto.login.LoginDto;
 import com.craftbay.crafts.dto.user.UserDto;
-import com.craftbay.crafts.response.LoginResponse;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 
-public interface UserService {
-    String addUser(UserDto userDto);
+public interface UserService extends UserDetailsService {
+    public UserDto createUser(UserDto userDto);
+    public UserDto getUser(String email);
 
-    LoginResponse loginUser(LoginDto loginDto);
+//    String addUser(UserDto userDto);
+//    LoginResponse loginUser(LoginDto loginDto);
+
+
+
+
 }

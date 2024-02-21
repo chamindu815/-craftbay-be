@@ -4,15 +4,18 @@ import com.craftbay.crafts.dto.login.LoginDto;
 import com.craftbay.crafts.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @EnableJpaRepositories
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
 
-    Optional<User> findOneByEmailAndPassword(String email, String password);
     User findByEmail(String email);
+
+    User findByUserId(String userId);
+
 
 }

@@ -1,13 +1,15 @@
 package com.craftbay.crafts.controller;
 
 
-import com.craftbay.crafts.dto.login.LoginDto;
 import com.craftbay.crafts.dto.user.UserDto;
-import com.craftbay.crafts.response.LoginResponse;
+import com.craftbay.crafts.util.enums.ErrorMessages;
+import org.modelmapper.ModelMapper;
+import com.craftbay.crafts.exception.UserServiceException;
+import com.craftbay.crafts.model.request.UserDetailsRequestModal;
 import com.craftbay.crafts.service.UserService;
-import org.apache.coyote.Response;
+import com.craftbay.crafts.model.ui.UserRest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,17 +22,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
+            produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public UserRest createUser(@RequestBody UserDetailsRequestModal userDetails) throws Exception
+    {
+        if (userDetails.getEmail().isEmpty())
+        {
+            throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELDS.getErrorMessage());
+        }
 
-    @PostMapping("/save")
-    public String saveUser(@RequestBody UserDto userDto){
-        String id = userService.addUser(userDto);
-        return id;
-    }
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDTO = modelMapper.map(userDetails, UserDto.class);
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
+        UserDto createdUserDTO = userService.createUser(userDTO);
 
-        LoginResponse loginResponse = userService.loginUser(loginDto);
-        return ResponseEntity.ok(loginResponse);
+        UserRest userRest = modelMapper.map(createdUserDTO, UserRest.class);
+        return userRest;
     }
 }

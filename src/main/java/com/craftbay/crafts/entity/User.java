@@ -3,29 +3,35 @@ package com.craftbay.crafts.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "user_tbl")
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id", length =45 )
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "user_name", length =255 )
+    @Column(nullable = false)
+    private String userId;
+
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(name = "user_email", length =255 )
+    @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(name = "user_phone", length =255 )
+    @Column(nullable = false, length = 50)
     private String phone;
 
-    @Column(name = "user_password", length =255 )
+    @Column(nullable = false, length = 50)
     private String password;
 
 }

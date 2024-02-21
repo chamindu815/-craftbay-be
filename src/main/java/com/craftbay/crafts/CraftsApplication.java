@@ -1,9 +1,12 @@
 package com.craftbay.crafts;
 
+import com.craftbay.crafts.security.AppProperties;
+import com.craftbay.crafts.util.SpringApplicationContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -25,6 +28,24 @@ public class CraftsApplication {
 				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())
 				.build();
+	}
+
+	@Bean
+	public BCryptPasswordEncoder bcryptPasswordEncoder()
+	{
+		return  new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public SpringApplicationContext SpringApplicationContext()
+	{
+		return  new SpringApplicationContext();
+	}
+
+	@Bean
+	public AppProperties AppProperties()
+	{
+		return  new AppProperties();
 	}
 
 }
