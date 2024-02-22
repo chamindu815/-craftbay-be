@@ -26,11 +26,6 @@ public class ProductController {
         return adminProductService.adminGetProducts();
     }
 
-    @GetMapping("/product/{id}")
-    public AdminProductResponseDto findProductById(int id) {
-        return adminProductService.adminGetProductById(id);
-    }
-
     @GetMapping("/productbyname/{name}")
     public AdminProductResponseDto findProductByName(String name) {
         return adminProductService.adminGetProductByName(name);

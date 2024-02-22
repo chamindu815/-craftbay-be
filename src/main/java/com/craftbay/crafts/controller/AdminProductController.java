@@ -57,7 +57,11 @@ public class AdminProductController {
         return adminProductService.adminDeleteProduct(id);
     }
 
-
+    @CrossOrigin
+    @GetMapping("/{id}")
+    public AdminProductResponseDto findProductById(@PathVariable("id") int id) {
+        return adminProductService.adminGetProductById(id);
+    }
 }
 
 
