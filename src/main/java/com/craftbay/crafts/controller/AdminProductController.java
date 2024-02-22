@@ -39,7 +39,7 @@ public class AdminProductController {
 
     }
 
-
+    @CrossOrigin
     @PutMapping("/update")
     public AdminProductResponseDto updateProduct(@RequestBody AdminUpdateProductRequestDto adminUpdateProductRequestDto) {
         return adminProductService.adminUpdateProduct(adminUpdateProductRequestDto);
