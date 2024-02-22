@@ -5,6 +5,7 @@ import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.service.ProductService;
 import com.craftbay.crafts.util.ProductUtil;
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getShopProducts(String category) {
+    public List<ProductResponseDto> getShopProducts(ProductCategoryEnum category) {
         List<Product> products = productRepository.findTop5ByCategory(category);
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
         for (int i =0; i<products.size(); i++){
+            ProductResponseDto productResponseDto = ProductUtil.convertProductToProductResponseDto(products.get(i));
+            productResponseDtoList.add(productResponseDto);
+        }
+        return productResponseDtoList;
+    }
+
+    @Override
+    public List<ProductResponseDto> getAllProductsByCategory(ProductCategoryEnum category) {
+        List<Product> products = productRepository.findAllByCategory(category);
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+        for (int i=0; i<products.size(); i++){
             ProductResponseDto productResponseDto = ProductUtil.convertProductToProductResponseDto(products.get(i));
             productResponseDtoList.add(productResponseDto);
         }

@@ -1,5 +1,6 @@
 package com.craftbay.crafts.dto.product;
 
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import lombok.Data;
 
 import javax.persistence.Lob;
@@ -10,7 +11,7 @@ public class AdminProductResponseDto {
     private int id;
     private String name;
     private String description;
-    private String category;
+    private ProductCategoryEnum category;
     private int remainingQuantity;
 
     private List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtos;

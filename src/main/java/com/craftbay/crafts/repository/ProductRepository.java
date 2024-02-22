@@ -1,6 +1,7 @@
 package com.craftbay.crafts.repository;
 
 import com.craftbay.crafts.entity.product.Product;
+import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +13,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     List<Product> findTop12ByOrderByUpdateDateDesc();
 
-    List<Product> findTop5ByCategory(String category);
+    List<Product> findTop5ByCategory(ProductCategoryEnum category);
+
+    List<Product> findAllByCategory(ProductCategoryEnum category);
 }
