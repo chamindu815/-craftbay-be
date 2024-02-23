@@ -1,4 +1,4 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.security;
 
 
 import org.springframework.context.annotation.Bean;

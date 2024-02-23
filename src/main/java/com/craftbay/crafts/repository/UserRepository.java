@@ -1,6 +1,6 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.repository;
 
-import com.craftbay.crafts.entity.Order;
+import com.craftbay.crafts.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

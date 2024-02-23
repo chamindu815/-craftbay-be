@@ -1,4 +1,6 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.dto.login;
+
+import org.springframework.http.HttpStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginReq {
-    private String email;
-    private String password;
+public class ErrorRes {
+    HttpStatus httpStatus;
+    String message;
 }

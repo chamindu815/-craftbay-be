@@ -1,5 +1,6 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.security;
 
+import com.craftbay.crafts.entity.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

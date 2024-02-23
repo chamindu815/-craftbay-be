@@ -1,4 +1,4 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.dto.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

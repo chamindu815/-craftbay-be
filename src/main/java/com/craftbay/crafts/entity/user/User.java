@@ -1,4 +1,4 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.entity.user;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

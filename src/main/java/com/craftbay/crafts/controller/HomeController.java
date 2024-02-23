@@ -1,4 +1,4 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

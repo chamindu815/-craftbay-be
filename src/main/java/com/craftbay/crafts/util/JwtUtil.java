@@ -1,5 +1,6 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.util;
 
+import com.craftbay.crafts.entity.user.User;
 import io.jsonwebtoken.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;

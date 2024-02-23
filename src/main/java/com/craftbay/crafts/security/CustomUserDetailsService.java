@@ -1,5 +1,7 @@
-package com.craftbay.crafts.loginonly;
+package com.craftbay.crafts.security;
 
+import com.craftbay.crafts.entity.user.User;
+import com.craftbay.crafts.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
