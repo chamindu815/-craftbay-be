@@ -2,6 +2,7 @@ package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.product.AdminProductResponseDto;
 import com.craftbay.crafts.dto.pub.product.ProductResponseDto;
+import com.craftbay.crafts.dto.pub.product.ShopProductsDto;
 import com.craftbay.crafts.service.AdminProductService;
 import com.craftbay.crafts.service.ProductService;
 import com.craftbay.crafts.util.enums.ProductCategoryEnum;
@@ -57,6 +58,13 @@ public class ProductController {
     @GetMapping("/getAllProductsByCategory")
     public List<ProductResponseDto> getAllProductsByCategory(@RequestParam(value = "category") ProductCategoryEnum category){
         return productService.getAllProductsByCategory(category);
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/shop/products")
+    public ShopProductsDto getShopProducts(){
+        return productService.getShopProducts();
     }
 
 }
