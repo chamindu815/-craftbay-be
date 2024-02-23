@@ -90,4 +90,12 @@ public class ProductUtil {
 //        return product;
 //    }
 
+    public static List<ProductResponseDto> convertListOfProductsToProductResponseDtos(List<Product> products) {
+        List<ProductResponseDto> response = new ArrayList<>();
+        for (int i=0; i<products.size();i++) {
+            response.add(convertProductToProductResponseDto(products.get(i)));
+        }
+        return response;
+    }
+
 }

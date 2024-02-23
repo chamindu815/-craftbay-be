@@ -1,6 +1,7 @@
 package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.pub.product.ProductResponseDto;
+import com.craftbay.crafts.dto.pub.product.ShopProductsDto;
 import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.service.ProductService;
@@ -50,5 +51,28 @@ public class ProductServiceImpl implements ProductService {
             productResponseDtoList.add(productResponseDto);
         }
         return productResponseDtoList;
+    }
+
+    @Override
+    public ShopProductsDto getShopProducts() {
+        List<ProductResponseDto> woodProducts =
+                ProductUtil.convertListOfProductsToProductResponseDtos(productRepository.findTop5ByCategory(ProductCategoryEnum.WOODEN));
+        List<ProductResponseDto> metalProducts =
+                ProductUtil.convertListOfProductsToProductResponseDtos(productRepository.findTop5ByCategory(ProductCategoryEnum.METAL));
+        List<ProductResponseDto> textileProducts =
+                ProductUtil.convertListOfProductsToProductResponseDtos(productRepository.findTop5ByCategory(ProductCategoryEnum.TEXTILE));
+        List<ProductResponseDto> clayProducts =
+                ProductUtil.convertListOfProductsToProductResponseDtos(productRepository.findTop5ByCategory(ProductCategoryEnum.CLAY));
+        List<ProductResponseDto> leatherProducts =
+                ProductUtil.convertListOfProductsToProductResponseDtos(productRepository.findTop5ByCategory(ProductCategoryEnum.LEATHER));
+
+        ShopProductsDto response = new ShopProductsDto();
+        response.setWoodenProducts(woodProducts);
+        response.setMetalProducts(metalProducts);
+        response.setClayProducts(clayProducts);
+        response.setTextileProducts(textileProducts);
+        response.setLeatherProducts(leatherProducts);
+
+        return response;
     }
 }
