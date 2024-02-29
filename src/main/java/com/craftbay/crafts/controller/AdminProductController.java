@@ -13,13 +13,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RequestMapping("/admin/product")
 public class AdminProductController {
 
     @Autowired
     private AdminProductService adminProductService;
 
-    @CrossOrigin
+//    @CrossOrigin
     @PostMapping("/addProduct")
       public AdminProductResponseDto addProduct(@RequestParam(value = "image", required = false) MultipartFile image,
                                                 @RequestParam("name") String name,
@@ -39,25 +40,25 @@ public class AdminProductController {
 
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @PutMapping("/update")
     public AdminProductResponseDto updateProduct(@RequestBody AdminUpdateProductRequestDto adminUpdateProductRequestDto) {
         return adminProductService.adminUpdateProduct(adminUpdateProductRequestDto);
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @GetMapping("/adminViewProduct")
     public List<AdminProductResponseDto> viewProduct(){
         return adminProductService.adminViewProducts();
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
         return adminProductService.adminDeleteProduct(id);
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @GetMapping("/{id}")
     public AdminProductResponseDto findProductById(@PathVariable("id") int id) {
         return adminProductService.adminGetProductById(id);
