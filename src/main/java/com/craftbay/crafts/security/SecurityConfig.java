@@ -41,21 +41,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors().and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html","/auth/**","/public/**")
-                .permitAll()
-                .antMatchers("/user/**")
-                .hasAuthority("USER")
-                .antMatchers("/admin/**")
-                .hasAuthority("ADMIN")
-                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+//        http
+//                .cors().and()
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html","/auth/**","/public/**")
+//                .permitAll()
+//                .antMatchers("/user/**")
+//                .hasAuthority("USER")
+//                .antMatchers("/admin/**")
+//                .hasAuthority("ADMIN")
+//                .anyRequest().authenticated()
+//                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
-//        http.authorizeHttpRequests().antMatchers("/**").permitAll().and().csrf().disable();
+        http.authorizeHttpRequests().antMatchers("/**").permitAll().and().csrf().disable();
 
         return http.build();
     }

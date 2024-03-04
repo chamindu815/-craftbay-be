@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class AdminProductBuyingPriceDetailsDto {
-    private long id;
+    private int id;
     private LocalDate date;
     private double price;
     private int quantity;
