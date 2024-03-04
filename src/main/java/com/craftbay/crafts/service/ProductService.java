@@ -14,4 +14,6 @@ public interface ProductService {
     List<ProductResponseDto> getAllProductsByCategory(ProductCategoryEnum category);
 
     ShopProductsDto getShopProducts();
+
+    ProductResponseDto getProductById(int productId);
 }

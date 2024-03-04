@@ -12,4 +12,5 @@ import lombok.Setter;
 public class LoginRes {
     private String email;
     private String token;
+    private int userId;
 }

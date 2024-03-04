@@ -37,6 +37,7 @@ public class AuthController {
     }
 
     @ResponseBody
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginReq loginReq)  {
 
@@ -44,9 +45,12 @@ public class AuthController {
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword()));
             String email = authentication.getName();
+
             User user = new User(email,"");
             String token = jwtUtil.createToken(user);
-            LoginRes loginRes = new LoginRes(email,token);
+            User loggedUser = userService.getUserByUsername(email);
+
+            LoginRes loginRes = new LoginRes(email,token, loggedUser.getId());
 
             return ResponseEntity.ok(loginRes);
 

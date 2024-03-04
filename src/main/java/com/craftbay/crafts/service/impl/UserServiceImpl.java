@@ -32,4 +32,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return user;
     }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
 }
