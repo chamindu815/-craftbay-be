@@ -11,7 +11,6 @@ import com.craftbay.crafts.repository.CartRepository;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.repository.UserRepository;
 import com.craftbay.crafts.service.CartService;
-import com.craftbay.crafts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,4 +94,21 @@ public class CartServiceImpl implements CartService {
         }
         return null;
     }
+
+    @Override
+    public Cart findCartByUser(int userId) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Optional<Cart> cart = cartRepository.findCartByUserAndIsOrdered(user, Boolean.FALSE);
+            if (cart.isPresent()) {
+                return cart.get();
+            } else {
+                throw new Exception("No Cart for this user");
+            }
+        } else {
+            throw new Exception("User Not Found!");
+        }
+    }
+
 }
