@@ -3,6 +3,7 @@ package com.craftbay.crafts.service.impl;
 import com.craftbay.crafts.dto.cart.AddToCartRequestDto;
 import com.craftbay.crafts.dto.cart.CartItemRequestDto;
 import com.craftbay.crafts.dto.cart.CartRequestDto;
+import com.craftbay.crafts.dto.cart.response.CartResponseDto;
 import com.craftbay.crafts.entity.cart.Cart;
 import com.craftbay.crafts.entity.cart.CartItem;
 import com.craftbay.crafts.entity.product.Product;
@@ -11,6 +12,7 @@ import com.craftbay.crafts.repository.CartRepository;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.repository.UserRepository;
 import com.craftbay.crafts.service.CartService;
+import com.craftbay.crafts.util.CartUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +46,13 @@ public class CartServiceImpl implements CartService {
 
                     Optional<CartItem> optionalItem = existingCart.getCartItems().stream().filter(x->x.getProduct() == optionalProduct.get()).findFirst();
                     if (optionalItem.isPresent()) {
-                        optionalItem.get().setQuantity(optionalItem.get().getQuantity() + request.getQuantity());
+                        CartItem cartItem = optionalItem.get();
+                        if (cartItem.getProduct().getRemainingQuantity()<(cartItem.getQuantity() + request.getQuantity())) {
+                            throw new Exception("Cart Exceeded the maximum amount of this product!");
+                        } else {
+                            optionalItem.get().setQuantity(optionalItem.get().getQuantity() + request.getQuantity());
+                        }
+
                     } else {
                         CartItem newItem = new CartItem();
                         newItem.setProduct(optionalProduct.get());
@@ -96,13 +104,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart findCartByUser(int userId) throws Exception {
+    public CartResponseDto findCartByUser(int userId) throws Exception {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             Optional<Cart> cart = cartRepository.findCartByUserAndIsOrdered(user, Boolean.FALSE);
             if (cart.isPresent()) {
-                return cart.get();
+                return CartUtil.covertCartToCartResponseDto(cart.get());
             } else {
                 throw new Exception("No Cart for this user");
             }

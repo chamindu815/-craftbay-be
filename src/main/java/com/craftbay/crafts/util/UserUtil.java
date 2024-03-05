@@ -1,6 +1,7 @@
 package com.craftbay.crafts.util;
 
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
+import com.craftbay.crafts.dto.user.UserResponseDto;
 import com.craftbay.crafts.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,4 +26,16 @@ public class UserUtil {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return user;
     }
+
+    public static UserResponseDto convertUserToUserResponseDto(User user){
+        UserResponseDto userResponse = new UserResponseDto();
+        userResponse.setId(user.getId());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setRole(user.getRole());
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setLastName(user.getLastName());
+
+        return userResponse;
+    }
+
 }
