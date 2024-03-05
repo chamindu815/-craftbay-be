@@ -60,6 +60,12 @@ public class ProductController {
         return productService.getAllProductsByCategory(category);
     }
 
+    @CrossOrigin
+    @GetMapping("/products/{productId}")
+    public ProductResponseDto getProductById(@PathVariable("productId") int productId){
+        return productService.getProductById(productId);
+    }
+
 
     @CrossOrigin
     @GetMapping("/shop/products")

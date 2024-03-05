@@ -1,12 +1,13 @@
 package com.craftbay.crafts.service;
 
-import com.craftbay.crafts.dto.login.LoginDto;
-import com.craftbay.crafts.dto.user.UserDto;
-import com.craftbay.crafts.response.LoginResponse;
-
+import com.craftbay.crafts.dto.register.RegisterRequestDto;
+import com.craftbay.crafts.dto.user.UserResponseDto;
+import com.craftbay.crafts.entity.user.User;
 
 public interface UserService {
-    String addUser(UserDto userDto);
+    String registerUser(RegisterRequestDto request);
 
-    LoginResponse loginUser(LoginDto loginDto);
+    User getUserByUsername(String username);
+
+    UserResponseDto getUserById(int userId);
 }
