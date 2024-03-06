@@ -9,9 +9,12 @@ import java.util.List;
 public interface ProductService {
     List<ProductResponseDto> getNewArrival();
 
+    // no use
     List<ProductResponseDto> getShopProducts(ProductCategoryEnum category);
 
     List<ProductResponseDto> getAllProductsByCategory(ProductCategoryEnum category);
 
     ShopProductsDto getShopProducts();
+
+    ProductResponseDto getProductById(int productId);
 }

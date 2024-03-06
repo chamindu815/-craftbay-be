@@ -1,13 +1,14 @@
 package com.craftbay.crafts.service.impl;
 
-import com.craftbay.crafts.dto.login.LoginDto;
-import com.craftbay.crafts.dto.user.UserDto;
-import com.craftbay.crafts.entity.User;
+import com.craftbay.crafts.dto.register.RegisterRequestDto;
+import com.craftbay.crafts.dto.user.UserResponseDto;
+import com.craftbay.crafts.entity.user.User;
 import com.craftbay.crafts.repository.UserRepository;
-import com.craftbay.crafts.response.LoginResponse;
 import com.craftbay.crafts.service.UserService;
+import com.craftbay.crafts.util.ProductUtil;
+import com.craftbay.crafts.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,46 +20,33 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    @Override
-    public String addUser(UserDto userDto) {
+    public String registerUser(RegisterRequestDto request) {
+        User user = convertUserRegisterRequestDtoToUser(request);
+        User savedUser = userRepository.save(user);
+        return savedUser.getUsername();
+    }
 
-        User user = new User(
-                userDto.getId(),
-                userDto.getName(),
-                userDto.getEmail(),
-                userDto.getPhone(),
-                this.passwordEncoder.encode(userDto.getPassword())
-        );
+    public User convertUserRegisterRequestDtoToUser(RegisterRequestDto request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setRole("USER");
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        return user;
+    }
 
-        userRepository.save(user);
-
-        return user.getName();
+    public User getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
-    public LoginResponse loginUser(LoginDto loginDto) {
-        String msg = "";
-        User user1 = userRepository.findByEmail(loginDto.getEmail());
-        if (user1 != null) {
-            String password = loginDto.getPassword();
-            String encodedPassword = user1.getPassword();
-            Boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
-            if (isPwdRight) {
-                Optional<User> user = userRepository.findOneByEmailAndPassword(loginDto.getEmail(), encodedPassword);
-                if (user.isPresent()) {
-                    return new LoginResponse("Login Success", true);
-                } else {
-                    return new LoginResponse("Login Failed", false);
-                }
-            } else {
-                return new LoginResponse("Email not exits", false);
-            }
-        }else {
-            return new LoginResponse("Email not exits", false);
-        }
-
+    public UserResponseDto getUserById(int userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
+        UserResponseDto userResponseDto = UserUtil.convertUserToUserResponseDto(user);
+        return userResponseDto;
     }
-
 }

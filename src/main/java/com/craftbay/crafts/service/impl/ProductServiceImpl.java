@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     public List<ProductResponseDto> getNewArrival(){
 
-        List<Product> productList = productRepository.  findTop12ByOrderByUpdateDateDesc();
+        List<Product> productList = productRepository.findTop12ByOrderByUpdateDateDesc();
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
         for (int i=0; i<productList.size(); i++){
             ProductResponseDto productResponseDto = ProductUtil.convertProductToProductResponseDto(productList.get(i));
@@ -54,6 +55,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseDto getProductById(int productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Product product = optionalProduct.get();
+        ProductResponseDto productResponseDto = ProductUtil.convertProductToProductResponseDto(product);
+        return productResponseDto;
+    }
+
+    @Override
     public ShopProductsDto getShopProducts() {
         List<ProductResponseDto> woodProducts =
                 ProductUtil.convertListOfProductsToProductResponseDtos(productRepository.findTop5ByCategory(ProductCategoryEnum.WOODEN));
@@ -75,4 +84,6 @@ public class ProductServiceImpl implements ProductService {
 
         return response;
     }
+
+
 }

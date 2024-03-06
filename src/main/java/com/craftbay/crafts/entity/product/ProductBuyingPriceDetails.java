@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class ProductBuyingPriceDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_price_generator")
-    private long id;
+    private int id;
 
     private LocalDate date;
 

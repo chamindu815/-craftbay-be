@@ -65,17 +65,26 @@ public class ProductUtil {
         productResponseDto.setRemainingQuantity(product.getRemainingQuantity());
         productResponseDto.setImage(product.getImage());
 
-//        TODO: Need to test properly
-        List<ProductSellingPriceDetails> priceList = product.getProductSellingPriceDetails().stream().sorted((a,b)->
-            a.getDate().compareTo(b.getDate())
-        ).collect(Collectors.toList());
 
-        for (int i=0; i<priceList.size();i++) {
-            if(priceList.get(i).getDate().isBefore(LocalDate.now()) || priceList.get(i).getDate().isEqual(LocalDate.now())) {
-                productResponseDto.setSellingPrice(priceList.get(i).getPrice());
-                break;
-            }
-        }
+        LocalDate today = LocalDate.now();
+        ProductSellingPriceDetails latestBeforeToday = product.getProductSellingPriceDetails().stream()
+                .filter(obj -> ((obj.getDate().isBefore(today))||(obj.getDate().isEqual(today))))
+                .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+                .orElse(null);
+
+//        TODO: Need to test properly
+//        List<ProductSellingPriceDetails> priceList = product.getProductSellingPriceDetails().stream().sorted((a,b)->
+//            a.getDate().compareTo(b.getDate())
+//        ).collect(Collectors.toList());
+//
+//        for (int i=0; i<priceList.size();i++) {
+//            if(priceList.get(i).getDate().isBefore(LocalDate.now()) || priceList.get(i).getDate().isEqual(LocalDate.now())) {
+//                productResponseDto.setSellingPrice(priceList.get(i).getPrice());
+//                break;
+//            }
+//        }
+
+        productResponseDto.setSellingPrice(latestBeforeToday.getPrice());
 
      return productResponseDto;
     }
