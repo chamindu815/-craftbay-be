@@ -21,6 +21,7 @@ public class CartController {
         return cartService.addToCart(request);
     }
 
+    @CrossOrigin
     @PutMapping("/cart/update-cart")
     public String updateCart(@RequestBody CartRequestDto request) throws Exception {
         return cartService.updateCart(request);
