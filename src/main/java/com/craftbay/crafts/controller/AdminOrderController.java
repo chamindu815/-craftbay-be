@@ -21,6 +21,7 @@ public class AdminOrderController {
         adminOrderService.adminUpdateOrder(orderId, status);
     }
 
+    @CrossOrigin
     @GetMapping
     public List<OrderResponseDto> getAllOrders() {
         return adminOrderService.getAllOrders();

@@ -13,6 +13,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @CrossOrigin
     @PostMapping("/{userId}/cart/{cartId}/place-order")
     public String placeOrder(@PathVariable("userId") int userId, @PathVariable("cartId") int cartId) throws Exception {
         return orderService.placeOrder(userId,cartId);
@@ -23,11 +24,13 @@ public class OrderController {
         return orderService.cancelOrder(userId,orderId);
     }
 
+    @CrossOrigin
     @GetMapping("/{userId}/my-orders")
     public List<OrderResponseDto> viewMyOrders(@PathVariable("userId") int userId) throws Exception {
         return orderService.viewMyOrders(userId);
     }
 
+    @CrossOrigin
     @GetMapping("/{userId}/orders/{orderId}")
     public OrderResponseDto viewOrderById(@PathVariable("userId") int userId, @PathVariable("orderId") int orderId) throws Exception {
         return orderService.viewOrderById(userId, orderId);
