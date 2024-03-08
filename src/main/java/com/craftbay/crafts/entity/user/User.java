@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,4 +32,10 @@ public class User {
     private String role;
     private String firstName;
     private String lastName;
+    private String houseNo;
+    private String streetName;
+    private String city;
+    private String country;
+    private String phoneNo;
+    private LocalDate dateOfBirth;
 }

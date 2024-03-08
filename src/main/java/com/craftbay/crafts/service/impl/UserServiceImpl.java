@@ -2,6 +2,7 @@ package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.card.AddCardDetailsRequest;
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
+import com.craftbay.crafts.dto.user.UpdateUserRequestDto;
 import com.craftbay.crafts.dto.user.UserResponseDto;
 import com.craftbay.crafts.entity.paymentmethod.PaymentMethod;
 import com.craftbay.crafts.entity.user.User;
@@ -85,5 +86,32 @@ public class UserServiceImpl implements UserService {
         String stripePaymentMethodId = stripeService.addCardToStripeUser(paymentMethod.getStripeCustomerId());
         savedPaymentMethod.setPaymentMethodId(stripePaymentMethodId);
         paymentMethodRepository.save(savedPaymentMethod);
+    }
+
+    @Override
+    public UserResponseDto updateUser(int userId, UpdateUserRequestDto request) throws Exception {
+
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setFirstName(request.getFirstName() == null ? existingUser.getFirstName(): request.getFirstName());
+            existingUser.setLastName(request.getLastName() == null ? existingUser.getLastName():request.getLastName());
+            existingUser.setHouseNo(request.getHouseNo() == null ? existingUser.getHouseNo():request.getHouseNo());
+            existingUser.setStreetName(request.getStreetName() == null ? existingUser.getStreetName():request.getStreetName());
+            existingUser.setCity(request.getCity() == null ? existingUser.getCity():request.getCity());
+            existingUser.setCountry(request.getCountry() == null ? existingUser.getCountry():request.getCountry());
+            existingUser.setDateOfBirth(request.getDateOfBirth() == null ? existingUser.getDateOfBirth():request.getDateOfBirth());
+            existingUser.setPhoneNo(request.getPhoneNo() == null ? existingUser.getPhoneNo():request.getPhoneNo());
+            existingUser = userRepository.save(existingUser);
+
+            if (request.getFirstName() != null || request.getLastName() !=null) {
+                PaymentMethod userPaymentMethod = paymentMethodRepository.findByUser(existingUser);
+                stripeService.updateStripeCustomer(userPaymentMethod.getStripeCustomerId(), request.getFirstName(), request.getLastName());
+            }
+
+            return UserUtil.convertUserToUserResponseDto(existingUser);
+        } else {
+            throw new Exception("User not available!");
+        }
     }
 }

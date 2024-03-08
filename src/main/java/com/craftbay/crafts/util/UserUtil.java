@@ -34,7 +34,12 @@ public class UserUtil {
         userResponse.setRole(user.getRole());
         userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
-
+        userResponse.setHouseNo(user.getHouseNo());
+        userResponse.setStreetName(user.getStreetName());
+        userResponse.setCity(user.getCity());
+        userResponse.setCountry(user.getCountry());
+        userResponse.setPhoneNo(user.getPhoneNo());
+        userResponse.setDateOfBirth(user.getDateOfBirth());
         return userResponse;
     }
 

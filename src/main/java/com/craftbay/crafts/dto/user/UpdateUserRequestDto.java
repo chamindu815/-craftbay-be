@@ -9,15 +9,11 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDto {
-    private int id;
-    private String username;
-    private String role;
+@NoArgsConstructor
+public class UpdateUserRequestDto {
     private String firstName;
     private String lastName;
-
     private String houseNo;
     private String streetName;
     private String city;
