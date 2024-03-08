@@ -8,6 +8,7 @@ import com.craftbay.crafts.entity.cart.Cart;
 import com.craftbay.crafts.entity.cart.CartItem;
 import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.entity.user.User;
+import com.craftbay.crafts.repository.CartItemRepository;
 import com.craftbay.crafts.repository.CartRepository;
 import com.craftbay.crafts.repository.ProductRepository;
 import com.craftbay.crafts.repository.UserRepository;
@@ -31,6 +32,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     @Override
     public String addToCart(AddToCartRequestDto request) throws Exception {
@@ -91,10 +95,16 @@ public class CartServiceImpl implements CartService {
         Optional<Cart> optionalExistingCart = cartRepository.findByIdAndIsOrdered(request.getId(), Boolean.FALSE);
         if (optionalExistingCart.isPresent()) {
             Cart existingCart = optionalExistingCart.get();
-            for (int i=0;i<request.getCartItems().size();i++) {
-                CartItemRequestDto item = request.getCartItems().get(i);
-                CartItem existingCartItem = existingCart.getCartItems().stream().filter(x -> x.getProduct().getId() == item.getProductId()).findFirst().get();
-                existingCartItem.setQuantity(existingCartItem.getQuantity() + item.getQuantity());
+
+            for (int i=0;i<existingCart.getCartItems().size();i++) {
+                CartItem existingCartItem = existingCart.getCartItems().get(i);
+                Optional<CartItemRequestDto> optionalItem = request.getCartItems().stream().filter(x -> x.getProductId() == existingCartItem.getProduct().getId()).findFirst();
+                if (optionalItem.isPresent()) {
+                    existingCartItem.setQuantity(optionalItem.get().getQuantity());
+                } else {
+                    cartItemRepository.deleteById(existingCartItem.getId());
+                    existingCart.getCartItems().remove(i);
+                }
             }
             cartRepository.save(existingCart);
         } else {
