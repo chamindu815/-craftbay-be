@@ -1,6 +1,5 @@
 package com.craftbay.crafts.controller;
 import com.craftbay.crafts.dto.order.OrderResponseDto;
-import com.craftbay.crafts.entity.Order;
 import com.craftbay.crafts.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,36 +7,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/user")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/addOrder")
-    public OrderResponseDto addOrder (@RequestBody Order order){
-        return orderService.saveOrder(order);
+    @PostMapping("/{userId}/cart/{cartId}/place-order")
+    public String placeOrder(@PathVariable("userId") int userId, @PathVariable("cartId") int cartId) throws Exception {
+        return orderService.placeOrder(userId,cartId);
     }
 
-    @GetMapping("/order")
-    public List<OrderResponseDto> findAllOrders(){
-        return orderService.getOrders();
+    @PostMapping("/{userId}/order/{orderId}/cancel-order")
+    public String cancelOrder(@PathVariable("userId") int userId, @PathVariable("orderId") int orderId) throws Exception {
+        return orderService.cancelOrder(userId,orderId);
     }
 
-    @GetMapping("/order/{id}")
-    public OrderResponseDto findOrderById(int id){
-        return orderService.getOrderById(id);
+    @GetMapping("/{userId}/my-orders")
+    public List<OrderResponseDto> viewMyOrders(@PathVariable("userId") int userId) throws Exception {
+        return orderService.viewMyOrders(userId);
     }
 
-    @GetMapping("/orderbyname/{name}")
-    public OrderResponseDto findOrderByName(String name){
-        return orderService.getOrderByName(name);
+    @GetMapping("/{userId}/orders/{orderId}")
+    public OrderResponseDto viewOrderById(@PathVariable("userId") int userId, @PathVariable("orderId") int orderId) throws Exception {
+        return orderService.viewOrderById(userId, orderId);
     }
-
-    @DeleteMapping("/deleteOrder/{id}")
-    public String deleteOrder(@PathVariable int id){
-        return orderService.deleteOrder(id);
-    }
-
-
 }

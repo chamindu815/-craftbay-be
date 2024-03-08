@@ -1,20 +1,13 @@
 package com.craftbay.crafts.service;
 
 import com.craftbay.crafts.dto.order.OrderResponseDto;
-import com.craftbay.crafts.entity.Order;
 
 import java.util.List;
 
 public interface OrderService {
+    public String placeOrder(int userId, int cartId) throws Exception;
+    public String cancelOrder(int userId,int orderId) throws Exception;
+    public List<OrderResponseDto> viewMyOrders(int userId) throws Exception;
 
-
-    OrderResponseDto saveOrder(Order order);
-
-    List<OrderResponseDto> getOrders();
-
-    OrderResponseDto getOrderById(int id);
-
-    OrderResponseDto getOrderByName(String name);
-
-    String deleteOrder(int id);
+    OrderResponseDto viewOrderById(int userId, int orderId) throws Exception;
 }

@@ -1,12 +1,19 @@
 package com.craftbay.crafts.dto.order;
 
-import lombok.Data;
+import com.craftbay.crafts.dto.cart.response.CartResponseDto;
+import com.craftbay.crafts.dto.user.UserResponseDto;
+import com.craftbay.crafts.util.enums.OrderStatusEnum;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
 public class OrderResponseDto {
     private int id;
-    private String name;
-    private String address;
-    private double price;
-    private int quantity;
+    private LocalDateTime orderCreated;
+    private OrderStatusEnum orderStatus;
+    private CartResponseDto cart;
+    private UserResponseDto user;
 }

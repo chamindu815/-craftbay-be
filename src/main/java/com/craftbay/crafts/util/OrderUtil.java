@@ -1,19 +1,32 @@
 package com.craftbay.crafts.util;
 
+
 import com.craftbay.crafts.dto.order.OrderResponseDto;
-import com.craftbay.crafts.entity.Order;
+import com.craftbay.crafts.entity.order.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class OrderUtil {
-
-    public static OrderResponseDto convertOrderToOrderResponseDto(Order order){
+    public static OrderResponseDto convertOrderToOrderResponseDto(Order order) {
         OrderResponseDto response = new OrderResponseDto();
         response.setId(order.getId());
-        response.setName(order.getName());
-        response.setAddress(order.getAddress());
-        response.setQuantity(order.getQuantity());
-//        response.setPrice(order.getPrice());
+        response.setOrderStatus(order.getOrderStatus());
+        response.setOrderCreated(order.getOrderCreated());
+        response.setCart(CartUtil.covertCartToCartResponseDto(order.getCart()));
+        response.setUser(UserUtil.convertUserToUserResponseDto(order.getUser()));
         return response;
     }
+
+    public static List<OrderResponseDto> convertOrderListToOrderResponseDtoList(List<Order> orders) {
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for (int i=0;i<orders.size();i++) {
+            OrderResponseDto order = convertOrderToOrderResponseDto(orders.get(i));
+            responseList.add(order);
+        }
+        return responseList;
+    }
+
 }
