@@ -1,5 +1,7 @@
 package com.craftbay.crafts;
 
+import com.stripe.Stripe;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -14,6 +16,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class CraftsApplication {
 
+	@Value("${stripe.apikey}")
+	private String stripeApiKey;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CraftsApplication.class, args);
 	}
@@ -25,6 +30,11 @@ public class CraftsApplication {
 				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())
 				.build();
+	}
+
+	@Bean
+	public void setStripeAPIKey() {
+		Stripe.apiKey = stripeApiKey;
 	}
 
 }
