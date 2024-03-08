@@ -2,6 +2,7 @@ package com.craftbay.crafts.service;
 
 import com.craftbay.crafts.dto.card.AddCardDetailsRequest;
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
+import com.craftbay.crafts.dto.user.UpdateUserRequestDto;
 import com.craftbay.crafts.dto.user.UserResponseDto;
 import com.craftbay.crafts.entity.user.User;
 
@@ -13,4 +14,6 @@ public interface UserService {
     UserResponseDto getUserById(int userId);
 
     void addCardToUser(int userId, AddCardDetailsRequest request);
+
+    UserResponseDto updateUser(int userId, UpdateUserRequestDto request) throws Exception;
 }

@@ -72,4 +72,17 @@ public class StripeServiceImpl implements StripeService {
         }
         return null;
     }
+
+    @Override
+    public void updateStripeCustomer(String stripeCustomerId, String firstName, String lastName) {
+        try {
+            Customer resource = Customer.retrieve(stripeCustomerId);
+            CustomerUpdateParams params =
+                    CustomerUpdateParams.builder().setName(firstName + " " + lastName).build();
+            Customer customer = resource.update(params);
+        } catch (Exception e) {
+            System.out.println("Exception occured while updating stripe customer!");
+        }
+
+    }
 }
