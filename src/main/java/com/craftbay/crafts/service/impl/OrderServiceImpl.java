@@ -2,20 +2,23 @@ package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.order.OrderResponseDto;
 import com.craftbay.crafts.entity.cart.Cart;
+import com.craftbay.crafts.entity.cart.CartItem;
 import com.craftbay.crafts.entity.order.Order;
+import com.craftbay.crafts.entity.paymentmethod.PaymentMethod;
+import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
 import com.craftbay.crafts.entity.user.User;
-import com.craftbay.crafts.repository.CartRepository;
-import com.craftbay.crafts.repository.OrderRepository;
-import com.craftbay.crafts.repository.ProductRepository;
-import com.craftbay.crafts.repository.UserRepository;
+import com.craftbay.crafts.repository.*;
 import com.craftbay.crafts.service.OrderService;
+import com.craftbay.crafts.service.StripeService;
 import com.craftbay.crafts.service.UserService;
 import com.craftbay.crafts.util.OrderUtil;
 import com.craftbay.crafts.util.enums.OrderStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private StripeService stripeService;
+
+    @Autowired
+    private PaymentMethodRepository paymentMethodRepository;
+
     @Override
     public String placeOrder(int userId, int cartId) throws Exception {
         Optional<Cart> optionalUserCart = cartRepository.findById(cartId);
@@ -44,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
             newOrder.setOrderCreated(LocalDateTime.now());
             newOrder.setOrderStatus(OrderStatusEnum.ORDERED);
             newOrder.setUser(userCart.getUser());
-            orderRepository.save(newOrder);
+            Order savedOrder = orderRepository.save(newOrder);
 
             userCart.getCartItems().stream().forEach(item -> {
                 item.getProduct().setRemainingQuantity(item.getProduct().getRemainingQuantity() - item.getQuantity());
@@ -53,11 +62,37 @@ public class OrderServiceImpl implements OrderService {
 
             userCart.setOrdered(true);
             cartRepository.save(userCart);
+
+            String orderPaymentDetailsId = placeAnOrderWithStripe(optionalUserCart.get(), savedOrder);
+            savedOrder.setOrderPaymentDetailsId(orderPaymentDetailsId);
+            orderRepository.save(savedOrder);
+
         } else {
             throw new Exception("User Doesn't Have a Cart!");
         }
 
         return null;
+    }
+
+    private String placeAnOrderWithStripe(Cart cart, Order savedOrder) {
+
+        PaymentMethod userPaymentMethod = paymentMethodRepository.findByUser(cart.getUser());
+
+        double totalOrderAmount = 0;
+        for (int i=0;i<cart.getCartItems().size();i++) {
+
+            CartItem cartItem = cart.getCartItems().get(i);
+
+            LocalDate today = LocalDate.now();
+            ProductSellingPriceDetails sellingPriceDetails = cartItem.getProduct().getProductSellingPriceDetails().stream()
+                    .filter(obj -> ((obj.getDate().isBefore(today))||(obj.getDate().isEqual(today))))
+                    .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+                    .orElse(null);
+
+            totalOrderAmount = totalOrderAmount + (cart.getCartItems().get(i).getQuantity() * sellingPriceDetails.getPrice());
+        }
+        String orderPaymentDetailsId = stripeService.placeAnOrderWithStripe(userPaymentMethod.getStripeCustomerId(), (long) totalOrderAmount*100, savedOrder.getId());
+        return orderPaymentDetailsId;
     }
 
     @Override

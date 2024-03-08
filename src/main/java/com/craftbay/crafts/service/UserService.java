@@ -1,5 +1,6 @@
 package com.craftbay.crafts.service;
 
+import com.craftbay.crafts.dto.card.AddCardDetailsRequest;
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
 import com.craftbay.crafts.dto.user.UserResponseDto;
 import com.craftbay.crafts.entity.user.User;
@@ -10,4 +11,6 @@ public interface UserService {
     User getUserByUsername(String username);
 
     UserResponseDto getUserById(int userId);
+
+    void addCardToUser(int userId, AddCardDetailsRequest request);
 }
