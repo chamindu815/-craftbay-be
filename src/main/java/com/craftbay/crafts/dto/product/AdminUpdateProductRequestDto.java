@@ -16,6 +16,6 @@ public class AdminUpdateProductRequestDto {
     @Lob
     private String image;
 
-    private List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtoList;
-    private List<AdminProductSellingPriceDetailsDto> adminProductSellingPriceDetailsDtoList;
+    private List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtos;
+    private List<AdminProductSellingPriceDetailsDto> adminProductSellingPriceDetailsDtos;
 }
