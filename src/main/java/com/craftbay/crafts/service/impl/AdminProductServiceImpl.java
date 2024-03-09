@@ -13,6 +13,7 @@ import com.craftbay.crafts.util.ProductUtil;
 import com.craftbay.crafts.util.enums.ProductCategoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -123,6 +124,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
 
+    @Transactional
     public AdminProductResponseDto adminUpdateProduct(AdminUpdateProductRequestDto adminUpdateProductRequestDto){
         Product existingProduct = productRepository.findById(adminUpdateProductRequestDto.getId()).orElse(null);
         existingProduct.setName(adminUpdateProductRequestDto.getName());
@@ -132,8 +134,8 @@ public class AdminProductServiceImpl implements AdminProductService {
         existingProduct.setUpdateDate(LocalDate.now());
 //        existingProduct.setPrice(product.getPrice());
 //        existingProduct.setQuantity(product.getQuantity());
-        for (int i = 0; i< adminUpdateProductRequestDto.getAdminProductBuyingPriceDetailsDtoList().size(); i++) {
-            AdminProductBuyingPriceDetailsDto adminProductBuyingPriceDetailsDto = adminUpdateProductRequestDto.getAdminProductBuyingPriceDetailsDtoList().get(i);
+        for (int i = 0; i< adminUpdateProductRequestDto.getAdminProductBuyingPriceDetailsDtos().size(); i++) {
+            AdminProductBuyingPriceDetailsDto adminProductBuyingPriceDetailsDto = adminUpdateProductRequestDto.getAdminProductBuyingPriceDetailsDtos().get(i);
 
 
 //            existingProduct.getProductBuyingPriceDetails().stream().findAny();
@@ -144,6 +146,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 //            else create new result.isPresent()
             if (result.isPresent()){
                 ProductBuyingPriceDetails existingProductPriceDetails = result.get();
+                existingProduct.setRemainingQuantity(existingProduct.getRemainingQuantity()-existingProductPriceDetails.getQuantity() + adminProductBuyingPriceDetailsDto.getQuantity());
                 existingProductPriceDetails.setPrice(adminProductBuyingPriceDetailsDto.getPrice());
                 existingProductPriceDetails.setDate(adminProductBuyingPriceDetailsDto.getDate());
                 existingProductPriceDetails.setQuantity(adminProductBuyingPriceDetailsDto.getQuantity());
@@ -151,7 +154,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 //                existingProduct.setName("Chcamindu");
                 existingProduct.setRemainingQuantity(existingProduct.getRemainingQuantity() + adminProductBuyingPriceDetailsDto.getQuantity());
                 ProductBuyingPriceDetails productBuyingPriceDetails1 = new ProductBuyingPriceDetails();
-                productBuyingPriceDetails1.setId(adminProductBuyingPriceDetailsDto.getId());
+//                productBuyingPriceDetails1.setId(adminProductBuyingPriceDetailsDto.getId());
                 productBuyingPriceDetails1.setPrice(adminProductBuyingPriceDetailsDto.getPrice());
                 productBuyingPriceDetails1.setDate(adminProductBuyingPriceDetailsDto.getDate());
                 productBuyingPriceDetails1.setQuantity(adminProductBuyingPriceDetailsDto.getQuantity());
@@ -160,8 +163,8 @@ public class AdminProductServiceImpl implements AdminProductService {
 
         }
 
-        for (int i = 0; i< adminUpdateProductRequestDto.getAdminProductSellingPriceDetailsDtoList().size(); i++){
-            AdminProductSellingPriceDetailsDto adminProductSellingPriceDetailsDto = adminUpdateProductRequestDto.getAdminProductSellingPriceDetailsDtoList().get(i);
+        for (int i = 0; i< adminUpdateProductRequestDto.getAdminProductSellingPriceDetailsDtos().size(); i++){
+            AdminProductSellingPriceDetailsDto adminProductSellingPriceDetailsDto = adminUpdateProductRequestDto.getAdminProductSellingPriceDetailsDtos().get(i);
 
 //            existingProduct.getProductSellingPriceDetails().stream().findAny();
             Optional<ProductSellingPriceDetails> result = existingProduct.getProductSellingPriceDetails()
@@ -176,7 +179,7 @@ public class AdminProductServiceImpl implements AdminProductService {
             else {
 
                 ProductSellingPriceDetails productSellingPriceDetails1 = new ProductSellingPriceDetails();
-                productSellingPriceDetails1.setId(adminProductSellingPriceDetailsDto.getId());
+//                productSellingPriceDetails1.setId(adminProductSellingPriceDetailsDto.getId());
                 productSellingPriceDetails1.setDate(adminProductSellingPriceDetailsDto.getDate());
                 productSellingPriceDetails1.setPrice(adminProductSellingPriceDetailsDto.getPrice());
                 existingProduct.getProductSellingPriceDetails().add(productSellingPriceDetails1);
