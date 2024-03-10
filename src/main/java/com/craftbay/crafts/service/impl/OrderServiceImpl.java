@@ -53,9 +53,29 @@ public class OrderServiceImpl implements OrderService {
             newOrder.setOrderCreated(LocalDateTime.now());
             newOrder.setOrderStatus(OrderStatusEnum.ORDERED);
             newOrder.setUser(userCart.getUser());
+
+            double totalOrderValue = 0;
+            for (int i=0;i<userCart.getCartItems().size();i++){
+                CartItem item = userCart.getCartItems().get(i);
+                LocalDate today = LocalDate.now();
+                ProductSellingPriceDetails sellingPriceDetails = item.getProduct().getProductSellingPriceDetails().stream()
+                        .filter(obj -> ((obj.getDate().isBefore(today))||(obj.getDate().isEqual(today))))
+                        .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+                        .orElse(null);
+                totalOrderValue = totalOrderValue + item.getQuantity()*sellingPriceDetails.getPrice();
+            }
+            newOrder.setTotalOrderValue(totalOrderValue);
+
             Order savedOrder = orderRepository.save(newOrder);
 
             userCart.getCartItems().stream().forEach(item -> {
+
+                LocalDate today = LocalDate.now();
+                ProductSellingPriceDetails sellingPriceDetails = item.getProduct().getProductSellingPriceDetails().stream()
+                        .filter(obj -> ((obj.getDate().isBefore(today))||(obj.getDate().isEqual(today))))
+                        .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+                        .orElse(null);
+
                 item.getProduct().setRemainingQuantity(item.getProduct().getRemainingQuantity() - item.getQuantity());
                 productRepository.save(item.getProduct());
             });

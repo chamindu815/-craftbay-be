@@ -63,6 +63,7 @@ public class AuthController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/save")
     public String saveUser(@Valid @RequestBody RegisterRequestDto request){
         String id = userService.registerUser(request);

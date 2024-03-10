@@ -17,6 +17,7 @@ public class OrderUtil {
         response.setOrderCreated(order.getOrderCreated());
         response.setCart(CartUtil.covertCartToCartResponseDto(order.getCart()));
         response.setUser(UserUtil.convertUserToUserResponseDto(order.getUser()));
+        response.setTotalOrderValue(order.getTotalOrderValue());
         return response;
     }
 

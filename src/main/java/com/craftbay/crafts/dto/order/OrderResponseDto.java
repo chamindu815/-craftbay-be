@@ -16,4 +16,5 @@ public class OrderResponseDto {
     private OrderStatusEnum orderStatus;
     private CartResponseDto cart;
     private UserResponseDto user;
+    private double totalOrderValue;
 }

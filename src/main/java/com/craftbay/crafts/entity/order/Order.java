@@ -36,4 +36,6 @@ public class Order {
     private User user;
 
     private String orderPaymentDetailsId;
+
+    private double totalOrderValue;
 }
