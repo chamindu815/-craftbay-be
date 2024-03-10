@@ -27,6 +27,7 @@ public class AdminOrderController {
         return adminOrderService.getAllOrders();
     }
 
+    @CrossOrigin
     @GetMapping("/{orderId}")
     public OrderResponseDto getOrderById(@PathVariable("orderId") int orderId) throws Exception {
         return adminOrderService.getOrderById(orderId);
