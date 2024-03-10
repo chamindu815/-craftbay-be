@@ -1,9 +1,12 @@
 package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.report.FileExportResponseDto;
+import com.craftbay.crafts.dto.report.InventoryReportResponse;
+import com.craftbay.crafts.dto.report.SalesReportResponse;
 import com.craftbay.crafts.entity.cart.CartItem;
 import com.craftbay.crafts.entity.order.Order;
 import com.craftbay.crafts.entity.product.Product;
+import com.craftbay.crafts.entity.product.ProductBuyingPriceDetails;
 import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
 import com.craftbay.crafts.repository.OrderRepository;
 import com.craftbay.crafts.repository.ProductRepository;
@@ -126,6 +129,85 @@ public class ReportServiceImpl implements ReportService {
         } catch (Exception e) {
             throw new Exception("Cannot get last month sales report now!");
         }
+    }
+
+    @Override
+    public List<InventoryReportResponse> getInventoryReportData() {
+
+        List<InventoryReportResponse> inventoryReport = new ArrayList<>();
+        List<Product> productList = productRepository.findAll();
+        for (Product product : productList) {
+
+            LocalDate today = LocalDate.now();
+            ProductBuyingPriceDetails buyingPriceDetails = product.getProductBuyingPriceDetails().stream()
+                    .filter(obj -> ((obj.getDate().isBefore(today)) || (obj.getDate().isEqual(today))))
+                    .max(Comparator.comparing(ProductBuyingPriceDetails::getDate))
+                    .orElse(null);
+            ProductSellingPriceDetails sellingPriceDetails = product.getProductSellingPriceDetails().stream()
+                    .filter(obj -> ((obj.getDate().isBefore(today)) || (obj.getDate().isEqual(today))))
+                    .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+                    .orElse(null);
+
+            InventoryReportResponse response = new InventoryReportResponse();
+            response.setProductName(product.getName());
+            response.setCategory(product.getCategory());
+            response.setRemainingQuantity(product.getRemainingQuantity());
+            response.setBuyingPrice(buyingPriceDetails.getPrice());
+            response.setSellingPrice(buyingPriceDetails.getPrice());
+            inventoryReport.add(response);
+        }
+
+        return inventoryReport;
+    }
+
+    public List<SalesReportResponse> getSalesReport(LocalDate startDate, LocalDate endDate) {
+
+        LocalTime localTime = LocalTime.MIDNIGHT;
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, localTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, localTime);
+
+        List<Order> orders = orderRepository.findAllByOrderStatusAndOrderCreatedBetweenOrderByOrderCreated(OrderStatusEnum.COMPLETED, startDateTime, endDateTime);
+        Map<String, Integer> map = new HashMap<>();
+
+        Map<Product, Integer> productQuantityMap = new HashMap<>();
+        Map<Product, Double> productPriceMap = new HashMap<>();
+        for (int i = 0; i < orders.size(); i++) {
+            Order order = orders.get(i);
+            for (int j = 0; j < order.getCart().getCartItems().size(); j++) {
+                CartItem item = order.getCart().getCartItems().get(j);
+
+
+                LocalDate orderDate = order.getOrderCreated().toLocalDate();
+                ProductSellingPriceDetails productSellingPriceDetails = item.getProduct().getProductSellingPriceDetails().stream()
+                        .filter(obj -> ((obj.getDate().isBefore(orderDate)) || (obj.getDate().isEqual(orderDate))))
+                        .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+                        .orElse(null);
+
+
+                if (productQuantityMap.get(item.getProduct()) != null) {
+                    double avgPrice = ((productQuantityMap.get(item.getProduct()) * productPriceMap.get(item.getProduct())) + (productSellingPriceDetails.getPrice() * item.getQuantity())) / (productQuantityMap.get(item.getProduct()) + item.getQuantity());
+                    productQuantityMap.put(item.getProduct(), productQuantityMap.get(item.getProduct()) + item.getQuantity());
+                    productPriceMap.put(item.getProduct(), avgPrice);
+                } else {
+                    productQuantityMap.put(item.getProduct(), item.getQuantity());
+                    productPriceMap.put(item.getProduct(), productSellingPriceDetails.getPrice());
+                }
+            }
+
+        }
+
+        List<SalesReportResponse> salesReportResponse = new ArrayList<>();
+
+        for (Map.Entry<Product, Integer> entry : productQuantityMap.entrySet()) {
+            SalesReportResponse response = new SalesReportResponse();
+            response.setProductName(entry.getKey().getName());
+            response.setCategory(entry.getKey().getCategory());
+            response.setSellQuantity(entry.getValue());
+            response.setAvgSellPrice(productPriceMap.get(entry.getKey()));
+            response.setTotalSales(productPriceMap.get(entry.getKey()) * entry.getValue());
+            salesReportResponse.add(response);
+        }
+        return salesReportResponse;
     }
 
 }
