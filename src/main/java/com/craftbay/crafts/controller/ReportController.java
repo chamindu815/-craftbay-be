@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,7 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    @CrossOrigin
     @GetMapping("/inventory")
     public ResponseEntity<InputStreamResource> exportReport() throws Exception {
 
@@ -50,6 +52,7 @@ public class ReportController {
                 .body(responseDto.getResource());
     }
 
+    @CrossOrigin
     @GetMapping("/sales")
     public ResponseEntity<InputStreamResource> getSalesReport() throws Exception {
 
@@ -61,11 +64,13 @@ public class ReportController {
                 .body(responseDto.getResource());
     }
 
+    @CrossOrigin
     @GetMapping("/sales-report")
     public List<SalesReportResponse> getSalesReport(@RequestParam(value = "startDate") String startDate, @RequestParam(value = "endDate") String endDate) {
         return reportService.getSalesReport(LocalDate.parse(startDate),LocalDate.parse(endDate));
     }
 
+    @CrossOrigin
     @GetMapping("/inventory-report")
     public List<InventoryReportResponse> getInventoryReport() {
         return reportService.getInventoryReportData();
