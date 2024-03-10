@@ -1,6 +1,8 @@
 package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.report.FileExportResponseDto;
+import com.craftbay.crafts.dto.report.InventoryReportResponse;
+import com.craftbay.crafts.dto.report.SalesReportResponse;
 import com.craftbay.crafts.service.ReportService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -18,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +59,16 @@ public class ReportController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, responseDto.getFileName())
                 .contentType(responseDto.getMediaType())
                 .body(responseDto.getResource());
+    }
+
+    @GetMapping("/sales-report")
+    public List<SalesReportResponse> getSalesReport(@RequestParam(value = "startDate") String startDate, @RequestParam(value = "endDate") String endDate) {
+        return reportService.getSalesReport(LocalDate.parse(startDate),LocalDate.parse(endDate));
+    }
+
+    @GetMapping("/inventory-report")
+    public List<InventoryReportResponse> getInventoryReport() {
+        return reportService.getInventoryReportData();
     }
 
 }
