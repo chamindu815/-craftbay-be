@@ -1,6 +1,8 @@
 package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.card.AddCardDetailsRequest;
+import com.craftbay.crafts.dto.card.CardDetailsResponseDto;
+import com.craftbay.crafts.dto.card.UpdateCardRequest;
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
 import com.craftbay.crafts.dto.user.UpdateUserRequestDto;
 import com.craftbay.crafts.dto.user.UserResponseDto;
@@ -10,6 +12,7 @@ import com.craftbay.crafts.repository.PaymentMethodRepository;
 import com.craftbay.crafts.repository.UserRepository;
 import com.craftbay.crafts.service.StripeService;
 import com.craftbay.crafts.service.UserService;
+import com.craftbay.crafts.util.CardUtil;
 import com.craftbay.crafts.util.ProductUtil;
 import com.craftbay.crafts.util.UserUtil;
 import com.stripe.model.Customer;
@@ -112,6 +115,33 @@ public class UserServiceImpl implements UserService {
             return UserUtil.convertUserToUserResponseDto(existingUser);
         } else {
             throw new Exception("User not available!");
+        }
+    }
+
+    @Override
+    public CardDetailsResponseDto getCardDetailsByUser(int userId) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            PaymentMethod paymentMethod = paymentMethodRepository.findByUser(optionalUser.get());
+            return CardUtil.convertPaymentMethodToCardDetailsResponseDto(paymentMethod);
+        } else {
+            throw new Exception("User not found!");
+        }
+    }
+
+    @Override
+    public CardDetailsResponseDto updateCardDetails(int userId, UpdateCardRequest request) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            PaymentMethod paymentMethod = paymentMethodRepository.findByUser(optionalUser.get());
+            paymentMethod.setCardNo((request.getCardNo() != null) ? request.getCardNo() : paymentMethod.getCardNo());
+            paymentMethod.setMonth((request.getMonth() != null) ? request.getMonth() : paymentMethod.getMonth());
+            paymentMethod.setYear((request.getYear() != null) ? request.getYear() : paymentMethod.getYear());
+            paymentMethod.setCvv((request.getCvv() != null) ? request.getCvv() : paymentMethod.getCvv());
+            paymentMethod = paymentMethodRepository.save(paymentMethod);
+            return CardUtil.convertPaymentMethodToCardDetailsResponseDto(paymentMethod);
+        } else {
+            throw new Exception("User Not Found!");
         }
     }
 }
