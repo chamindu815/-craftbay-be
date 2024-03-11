@@ -19,6 +19,7 @@ public class OrderController {
         return orderService.placeOrder(userId,cartId);
     }
 
+    @CrossOrigin
     @PostMapping("/{userId}/order/{orderId}/cancel-order")
     public String cancelOrder(@PathVariable("userId") int userId, @PathVariable("orderId") int orderId) throws Exception {
         return orderService.cancelOrder(userId,orderId);

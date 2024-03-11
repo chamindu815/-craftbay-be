@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
                         .orElse(null);
                 totalOrderValue = totalOrderValue + item.getQuantity()*sellingPriceDetails.getPrice();
             }
-            newOrder.setTotalOrderValue(totalOrderValue);
+            newOrder.setTotalOrderValue(totalOrderValue + 500);
 
             Order savedOrder = orderRepository.save(newOrder);
 
@@ -98,20 +98,20 @@ public class OrderServiceImpl implements OrderService {
 
         PaymentMethod userPaymentMethod = paymentMethodRepository.findByUser(cart.getUser());
 
-        double totalOrderAmount = 0;
-        for (int i=0;i<cart.getCartItems().size();i++) {
-
-            CartItem cartItem = cart.getCartItems().get(i);
-
-            LocalDate today = LocalDate.now();
-            ProductSellingPriceDetails sellingPriceDetails = cartItem.getProduct().getProductSellingPriceDetails().stream()
-                    .filter(obj -> ((obj.getDate().isBefore(today))||(obj.getDate().isEqual(today))))
-                    .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
-                    .orElse(null);
-
-            totalOrderAmount = totalOrderAmount + (cart.getCartItems().get(i).getQuantity() * sellingPriceDetails.getPrice());
-        }
-        String orderPaymentDetailsId = stripeService.placeAnOrderWithStripe(userPaymentMethod.getStripeCustomerId(), (long) totalOrderAmount*100, savedOrder.getId());
+//        double totalOrderAmount = 0;
+//        for (int i=0;i<cart.getCartItems().size();i++) {
+//
+//            CartItem cartItem = cart.getCartItems().get(i);
+//
+//            LocalDate today = LocalDate.now();
+//            ProductSellingPriceDetails sellingPriceDetails = cartItem.getProduct().getProductSellingPriceDetails().stream()
+//                    .filter(obj -> ((obj.getDate().isBefore(today))||(obj.getDate().isEqual(today))))
+//                    .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
+//                    .orElse(null);
+//
+//            totalOrderAmount = totalOrderAmount + (cart.getCartItems().get(i).getQuantity() * sellingPriceDetails.getPrice());
+//        }
+        String orderPaymentDetailsId = stripeService.placeAnOrderWithStripe(userPaymentMethod.getStripeCustomerId(), (long) savedOrder.getTotalOrderValue()*100, savedOrder.getId());
         return orderPaymentDetailsId;
     }
 

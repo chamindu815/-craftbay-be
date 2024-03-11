@@ -153,7 +153,7 @@ public class ReportServiceImpl implements ReportService {
             response.setCategory(product.getCategory());
             response.setRemainingQuantity(product.getRemainingQuantity());
             response.setBuyingPrice(buyingPriceDetails.getPrice());
-            response.setSellingPrice(buyingPriceDetails.getPrice());
+            response.setSellingPrice(sellingPriceDetails.getPrice());
             inventoryReport.add(response);
         }
 
