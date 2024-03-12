@@ -1,6 +1,7 @@
 package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.order.OrderResponseDto;
+import com.craftbay.crafts.dto.order.PlaceOrderResponseDto;
 import com.craftbay.crafts.entity.cart.Cart;
 import com.craftbay.crafts.entity.cart.CartItem;
 import com.craftbay.crafts.entity.order.Order;
@@ -44,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     private PaymentMethodRepository paymentMethodRepository;
 
     @Override
-    public String placeOrder(int userId, int cartId) throws Exception {
+    public PlaceOrderResponseDto placeOrder(int userId, int cartId) throws Exception {
         Optional<Cart> optionalUserCart = cartRepository.findById(cartId);
         if (optionalUserCart.isPresent()) {
             Cart userCart = optionalUserCart.get();
@@ -85,13 +86,12 @@ public class OrderServiceImpl implements OrderService {
 
             String orderPaymentDetailsId = placeAnOrderWithStripe(optionalUserCart.get(), savedOrder);
             savedOrder.setOrderPaymentDetailsId(orderPaymentDetailsId);
-            orderRepository.save(savedOrder);
-
+            Order finalOrder = orderRepository.save(savedOrder);
+            PlaceOrderResponseDto response = new PlaceOrderResponseDto(finalOrder.getId(),finalOrder.getTotalOrderValue(),finalOrder.getUser().getUsername());
+            return response;
         } else {
             throw new Exception("User Doesn't Have a Cart!");
         }
-
-        return null;
     }
 
     private String placeAnOrderWithStripe(Cart cart, Order savedOrder) {

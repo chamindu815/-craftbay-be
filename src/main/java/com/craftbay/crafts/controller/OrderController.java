@@ -1,5 +1,6 @@
 package com.craftbay.crafts.controller;
 import com.craftbay.crafts.dto.order.OrderResponseDto;
+import com.craftbay.crafts.dto.order.PlaceOrderResponseDto;
 import com.craftbay.crafts.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class OrderController {
 
     @CrossOrigin
     @PostMapping("/{userId}/cart/{cartId}/place-order")
-    public String placeOrder(@PathVariable("userId") int userId, @PathVariable("cartId") int cartId) throws Exception {
+    public PlaceOrderResponseDto placeOrder(@PathVariable("userId") int userId, @PathVariable("cartId") int cartId) throws Exception {
         return orderService.placeOrder(userId,cartId);
     }
 
