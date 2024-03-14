@@ -3,6 +3,7 @@ package com.craftbay.crafts.service;
 import com.craftbay.crafts.dto.card.AddCardDetailsRequest;
 import com.craftbay.crafts.dto.card.CardDetailsResponseDto;
 import com.craftbay.crafts.dto.card.UpdateCardRequest;
+import com.craftbay.crafts.dto.forgotpassword.ForgotPasswordRequestDto;
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
 import com.craftbay.crafts.dto.user.UpdateUserRequestDto;
 import com.craftbay.crafts.dto.user.UserResponseDto;
@@ -22,4 +23,6 @@ public interface UserService {
     CardDetailsResponseDto getCardDetailsByUser(int userId) throws Exception;
 
     CardDetailsResponseDto updateCardDetails(int userId, UpdateCardRequest request) throws Exception;
+
+    void forgotPassword(ForgotPasswordRequestDto request);
 }
