@@ -1,5 +1,6 @@
 package com.craftbay.crafts.controller;
 
+import com.craftbay.crafts.dto.forgotpassword.ForgotPasswordRequestDto;
 import com.craftbay.crafts.dto.login.ErrorRes;
 import com.craftbay.crafts.dto.login.LoginReq;
 import com.craftbay.crafts.dto.login.LoginRes;
@@ -83,5 +84,11 @@ public class AuthController {
         });
 
         return errors;
+    }
+
+    @CrossOrigin
+    @PostMapping("/forgot-password")
+    public void forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+        userService.forgotPassword(request);
     }
 }

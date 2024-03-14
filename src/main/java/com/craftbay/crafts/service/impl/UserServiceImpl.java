@@ -3,6 +3,7 @@ package com.craftbay.crafts.service.impl;
 import com.craftbay.crafts.dto.card.AddCardDetailsRequest;
 import com.craftbay.crafts.dto.card.CardDetailsResponseDto;
 import com.craftbay.crafts.dto.card.UpdateCardRequest;
+import com.craftbay.crafts.dto.forgotpassword.ForgotPasswordRequestDto;
 import com.craftbay.crafts.dto.register.RegisterRequestDto;
 import com.craftbay.crafts.dto.user.UpdateUserRequestDto;
 import com.craftbay.crafts.dto.user.UserResponseDto;
@@ -144,5 +145,12 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new Exception("User Not Found!");
         }
+    }
+
+    @Override
+    public void forgotPassword(ForgotPasswordRequestDto request) {
+        User user = userRepository.findUserByUsername(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
     }
 }
