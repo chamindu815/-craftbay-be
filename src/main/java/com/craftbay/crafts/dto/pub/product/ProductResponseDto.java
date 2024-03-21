@@ -15,6 +15,8 @@ public class ProductResponseDto {
     private ProductCategoryEnum category;
     private int remainingQuantity;
     private double sellingPrice;
+    private int rate;
+    private int noOfRatings;
 
 
     @Lob

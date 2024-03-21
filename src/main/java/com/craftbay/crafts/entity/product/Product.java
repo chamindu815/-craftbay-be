@@ -42,6 +42,10 @@ public class Product {
     @JoinColumn(name = "product_id")
     private List<ProductSellingPriceDetails> productSellingPriceDetails;
 
+    private int rate;
+
+    private int noOfRatings;
+
 
 //    public int getId()
 //    {

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ProductUtil {
@@ -22,6 +21,8 @@ public class ProductUtil {
         response.setImage(product.getImage());
         response.setDescription(product.getDescription());
         response.setRemainingQuantity(product.getRemainingQuantity());
+        response.setRate(product.getRate());
+        response.setNoOfRatings(product.getNoOfRatings());
 
 
         List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtoList = new ArrayList<>();
@@ -64,6 +65,8 @@ public class ProductUtil {
         productResponseDto.setCategory(product.getCategory());
         productResponseDto.setRemainingQuantity(product.getRemainingQuantity());
         productResponseDto.setImage(product.getImage());
+        productResponseDto.setRate(product.getRate());
+        productResponseDto.setNoOfRatings(product.getNoOfRatings());
 
 
         LocalDate today = LocalDate.now();

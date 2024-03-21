@@ -24,4 +24,6 @@ public class CartItem {
 
     private int quantity;
 
+    private int rate;
+
 }

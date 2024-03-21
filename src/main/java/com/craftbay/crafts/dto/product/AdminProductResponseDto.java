@@ -17,6 +17,9 @@ public class AdminProductResponseDto {
     private List<AdminProductBuyingPriceDetailsDto> adminProductBuyingPriceDetailsDtos;
     private List<AdminProductSellingPriceDetailsDto> adminProductSellingPriceDetailsDtos;
 
+    private int rate;
+    private int noOfRatings;
+
     @Lob
     private String image;
     public int getId()

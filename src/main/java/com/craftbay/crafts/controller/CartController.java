@@ -1,6 +1,7 @@
 package com.craftbay.crafts.controller;
 
 import com.craftbay.crafts.dto.cart.AddToCartRequestDto;
+import com.craftbay.crafts.dto.cart.CartItemRateRequestDto;
 import com.craftbay.crafts.dto.cart.CartRequestDto;
 import com.craftbay.crafts.dto.cart.response.CartResponseDto;
 import com.craftbay.crafts.entity.cart.Cart;
@@ -31,6 +32,12 @@ public class CartController {
     @GetMapping("/{userId}/cart")
     public CartResponseDto findCartByUserId(@PathVariable("userId") int userId) throws Exception {
         return cartService.findCartByUser(userId);
+    }
+
+    @CrossOrigin
+    @PostMapping("/cart/cart-item/rate")
+    public void rateCartItem(@RequestBody CartItemRateRequestDto request) throws Exception {
+        cartService.rateCartItem(request);
     }
 
 }

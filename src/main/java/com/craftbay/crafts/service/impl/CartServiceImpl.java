@@ -1,6 +1,7 @@
 package com.craftbay.crafts.service.impl;
 
 import com.craftbay.crafts.dto.cart.AddToCartRequestDto;
+import com.craftbay.crafts.dto.cart.CartItemRateRequestDto;
 import com.craftbay.crafts.dto.cart.CartItemRequestDto;
 import com.craftbay.crafts.dto.cart.CartRequestDto;
 import com.craftbay.crafts.dto.cart.response.CartResponseDto;
@@ -126,6 +127,28 @@ public class CartServiceImpl implements CartService {
             }
         } else {
             throw new Exception("User Not Found!");
+        }
+    }
+
+    @Override
+    public void rateCartItem(CartItemRateRequestDto request) throws Exception {
+        Optional<CartItem> optionalCartItem = cartItemRepository.findById(request.getCartItemId());
+        CartItem cartItem = null;
+        if (optionalCartItem.isPresent()) {
+            cartItem = optionalCartItem.get();
+            Product ratedProduct = cartItem.getProduct();
+
+            if (cartItem.getRate()==0) {
+                ratedProduct.setRate(ratedProduct.getRate() + request.getRate());
+                ratedProduct.setNoOfRatings(ratedProduct.getNoOfRatings()+1);
+            } else {
+                ratedProduct.setRate(ratedProduct.getRate() - cartItem.getRate() + request.getRate());
+            }
+            productRepository.save(ratedProduct);
+            cartItem.setRate(request.getRate());
+            cartItemRepository.save(cartItem);
+        } else {
+            throw new Exception("Cart Item Not Found!");
         }
     }
 
