@@ -8,10 +8,13 @@ import com.craftbay.crafts.entity.order.Order;
 import com.craftbay.crafts.entity.product.Product;
 import com.craftbay.crafts.entity.product.ProductBuyingPriceDetails;
 import com.craftbay.crafts.entity.product.ProductSellingPriceDetails;
+import com.craftbay.crafts.entity.report.Report;
 import com.craftbay.crafts.repository.OrderRepository;
 import com.craftbay.crafts.repository.ProductRepository;
+import com.craftbay.crafts.repository.ReportRepository;
 import com.craftbay.crafts.service.ReportService;
 import com.craftbay.crafts.util.enums.OrderStatusEnum;
+import com.craftbay.crafts.util.enums.ReportType;
 import com.craftbay.crafts.util.exporter.CSVHelper;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -37,6 +40,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ReportRepository reportRepository;
 
     @Autowired
     private CSVHelper csvHelper;
@@ -157,6 +163,13 @@ public class ReportServiceImpl implements ReportService {
             inventoryReport.add(response);
         }
 
+        Report report = new Report();
+        report.setReportType(ReportType.INVENTORY_REPORT);
+        report.setGeneratedDate(LocalDateTime.now());
+        String title = "Inventory_Report_" + LocalDate.now();
+        report.setTitle(title);
+        reportRepository.save(report);
+
         return inventoryReport;
     }
 
@@ -207,6 +220,14 @@ public class ReportServiceImpl implements ReportService {
             response.setTotalSales(productPriceMap.get(entry.getKey()) * entry.getValue());
             salesReportResponse.add(response);
         }
+
+        Report report = new Report();
+        report.setReportType(ReportType.SALES_REPORT);
+        report.setGeneratedDate(LocalDateTime.now());
+        String title = "Sales_Report_" + startDate + "-" + endDate;
+        report.setTitle(title);
+        reportRepository.save(report);
+
         return salesReportResponse;
     }
 
