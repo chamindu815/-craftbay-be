@@ -14,4 +14,5 @@ public class CartItemResponseDto {
     private int id;
     private int quantity;
     private ProductResponseDto product;
+    private int rate;
 }

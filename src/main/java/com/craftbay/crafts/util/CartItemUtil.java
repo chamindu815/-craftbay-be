@@ -12,6 +12,7 @@ public class CartItemUtil {
         cartItemResponse.setId(cartItem.getId());
         cartItemResponse.setQuantity(cartItem.getQuantity());
         cartItemResponse.setProduct(ProductUtil.convertProductToProductResponseDto(cartItem.getProduct()));
+        cartItemResponse.setRate(cartItem.getRate());
         return cartItemResponse;
     }
 }
