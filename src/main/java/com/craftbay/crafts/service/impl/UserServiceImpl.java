@@ -83,10 +83,10 @@ public class UserServiceImpl implements UserService {
     public void addCardToUser(int userId, AddCardDetailsRequest request) {
         Optional<User> optionalUser = userRepository.findById(userId);
         PaymentMethod paymentMethod = paymentMethodRepository.findByUser(optionalUser.get());
-        paymentMethod.setCardNo(request.getCardNo());
-        paymentMethod.setMonth(request.getMonth());
-        paymentMethod.setYear(request.getYear());
-        paymentMethod.setCvv(request.getCvv());
+        paymentMethod.setCardNo((request.getCardNo() != null) ? request.getCardNo() : paymentMethod.getCardNo());
+        paymentMethod.setMonth((request.getMonth() != null) ? request.getMonth() : paymentMethod.getMonth());
+        paymentMethod.setYear((request.getYear() != null) ? request.getYear() : paymentMethod.getYear());
+        paymentMethod.setCvv((request.getCvv() != null) ? request.getCvv() : paymentMethod.getCvv());
         PaymentMethod savedPaymentMethod = paymentMethodRepository.save(paymentMethod);
         String stripePaymentMethodId = stripeService.addCardToStripeUser(paymentMethod.getStripeCustomerId());
         savedPaymentMethod.setPaymentMethodId(stripePaymentMethodId);
