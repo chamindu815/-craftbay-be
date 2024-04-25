@@ -15,6 +15,7 @@ public class AdminOrderController {
     @Autowired
     private AdminOrderService adminOrderService;
 
+    @CrossOrigin
     @PostMapping("/{orderId}/update-order")
     public void adminUpdateOrder(@PathVariable("orderId") int orderId,
                                  @RequestParam(value = "status") OrderStatusEnum status) throws Exception {
@@ -33,6 +34,7 @@ public class AdminOrderController {
         return adminOrderService.getOrderById(orderId);
     }
 
+    @CrossOrigin
     @GetMapping("/status/{status}")
     public List<OrderResponseDto> getAllOrderByStatus(@PathVariable("status") OrderStatusEnum status) {
         return adminOrderService.getAllOrderByStatus(status);

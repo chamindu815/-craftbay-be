@@ -40,29 +40,29 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @CrossOrigin
-    @GetMapping("/inventory")
-    public ResponseEntity<InputStreamResource> exportReport() throws Exception {
-
-        FileExportResponseDto responseDto =
-                reportService.getInventoryReport();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, responseDto.getFileName())
-                .contentType(responseDto.getMediaType())
-                .body(responseDto.getResource());
-    }
-
-    @CrossOrigin
-    @GetMapping("/sales")
-    public ResponseEntity<InputStreamResource> getSalesReport() throws Exception {
-
-        FileExportResponseDto responseDto =
-                reportService.getLastMonthSalesReport();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, responseDto.getFileName())
-                .contentType(responseDto.getMediaType())
-                .body(responseDto.getResource());
-    }
+//    @CrossOrigin
+//    @GetMapping("/inventory")
+//    public ResponseEntity<InputStreamResource> exportReport() throws Exception {
+//
+//        FileExportResponseDto responseDto =
+//                reportService.getInventoryReport();
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, responseDto.getFileName())
+//                .contentType(responseDto.getMediaType())
+//                .body(responseDto.getResource());
+//    }
+//
+//    @CrossOrigin
+//    @GetMapping("/sales")
+//    public ResponseEntity<InputStreamResource> getSalesReport() throws Exception {
+//
+//        FileExportResponseDto responseDto =
+//                reportService.getLastMonthSalesReport();
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, responseDto.getFileName())
+//                .contentType(responseDto.getMediaType())
+//                .body(responseDto.getResource());
+//    }
 
     @CrossOrigin
     @GetMapping("/sales-report")

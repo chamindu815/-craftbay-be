@@ -145,10 +145,12 @@ public class ReportServiceImpl implements ReportService {
         for (Product product : productList) {
 
             LocalDate today = LocalDate.now();
+            //Get the latest buying price details
             ProductBuyingPriceDetails buyingPriceDetails = product.getProductBuyingPriceDetails().stream()
                     .filter(obj -> ((obj.getDate().isBefore(today)) || (obj.getDate().isEqual(today))))
                     .max(Comparator.comparing(ProductBuyingPriceDetails::getDate))
                     .orElse(null);
+            //Get the latest selling price details
             ProductSellingPriceDetails sellingPriceDetails = product.getProductSellingPriceDetails().stream()
                     .filter(obj -> ((obj.getDate().isBefore(today)) || (obj.getDate().isEqual(today))))
                     .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
@@ -191,6 +193,7 @@ public class ReportServiceImpl implements ReportService {
 
 
                 LocalDate orderDate = order.getOrderCreated().toLocalDate();
+                //Get selling price related to the ordered date
                 ProductSellingPriceDetails productSellingPriceDetails = item.getProduct().getProductSellingPriceDetails().stream()
                         .filter(obj -> ((obj.getDate().isBefore(orderDate)) || (obj.getDate().isEqual(orderDate))))
                         .max(Comparator.comparing(ProductSellingPriceDetails::getDate))
